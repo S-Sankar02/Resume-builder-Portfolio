@@ -1,89 +1,163 @@
 {% extends "base.html" %}
+{% block title %}
+ATS Score Analyzer
+{% endblock %}
 {% block content %}
 
 <div class="dashboard-wrapper fade-in">
 
     <!-- HEADER -->
+
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <h2>ATS Score Analyzer</h2>
-            <p class="text-muted">Check how well your resume matches job descriptions</p>
+            <h2>
+                ATS Score Analyzer
+            </h2>
+
+            <p class="text-muted">
+                Check how well your resume matches job descriptions
+            </p>
         </div>
 
-        <button class="btn btn-dark" onclick="toggleTheme()">
-             Theme
+        <button 
+            class="btn btn-outline-dark"
+            onclick="toggleTheme()">
+            Theme
         </button>
+
     </div>
 
-    <div class="row">
+    <div class="row g-4">
+        <!-- INPUT SECTION -->
 
-        <!-- INPUT -->
         <div class="col-md-6">
-
             <div class="card p-4 shadow">
+                <h5>
+                    Job Description
+                </h5>
+                <textarea
 
-                <h5> Job Description</h5>
-                <textarea id="jobDescription" class="form-control mb-3" rows="8"
-                    placeholder="Paste job description here..."></textarea>
+                    id="jobDescription"
 
-                <h5>📎 Upload Resume</h5>
-                <input type="file" id="resumeFile" class="form-control mb-3">
+                    class="form-control mb-3"
 
-                <button id="atsAnalyzeBtn" class="btn btn-primary w-100">
-                     Analyze ATS Score
+                    rows="8"
+
+                    placeholder="Paste job description here...">
+
+                </textarea>
+                <h5>
+                    📎 Upload Resume
+                </h5>
+                <input
+                    type="file"
+                    id="resumeFile"
+                    class="form-control mb-3"
+                    accept=".pdf,.doc,.docx">
+                <button
+                    id="atsAnalyzeBtn"
+                    class="btn btn-primary px-4">
+                    Analyze ATS Score
                 </button>
-
             </div>
 
-            <div class="card mt-3 p-3">
-                <h6>💡 Pro Tips</h6>
+            <!-- TIPS -->
+            <div class="card mt-3 p-3 shadow-sm">
+                <h6>
+                    💡 Pro Tips
+                </h6>
                 <ul class="small text-muted mb-0">
-                    <li>Use keywords from job description</li>
-                    <li>Avoid complex formatting</li>
-                    <li>Keep resume 1–2 pages</li>
+                    <li>
+                        Use keywords from job description
+                    </li>
+                    <li>
+                        Avoid complex resume formatting
+                    </li>
+
+                    <li>
+                        Keep resume 1–2 pages
+                    </li>
+                    <li>
+                        Add skills matching the role
+                    </li>
                 </ul>
             </div>
-
         </div>
+        <!-- RESULT SECTION -->
 
-        <!-- RESULT -->
         <div class="col-md-6">
-
             <div class="card p-4 shadow resume-card">
-
-                <h5> ATS Score</h5>
-
+                <h5>
+                    ATS Score
+               </h5>
                 <div class="text-center my-3">
-                    <div id="scoreValue" style="font-size:40px;font-weight:700;color:#0d6efd;">
-                        0%
+                    <div
+                        id="scoreValue"
+                        style="
+                        font-size:40px;
+                        font-weight:700;
+                        color:#0d6efd;">
+                       0%
                     </div>
-                    <small id="scoreLabel" class="text-muted">Waiting...</small>
+                    <small
+                        id="scoreLabel"
+                        class="text-muted">
+                        Waiting...
+                    </small>
                 </div>
-
                 <div class="progress mb-3">
-                    <div id="scoreBar" class="progress-bar bg-success" style="width:0%"></div>
-                </div>
 
-                <h6> Analysis</h6>
-                <p id="analysisText" class="text-muted">
+                    <div
+                        id="scoreBar"
+                        class="progress-bar bg-success"
+                        style="width:0%">
+                    </div>
+
+                </div>
+                <h6>
+                    Analysis
+                </h6>
+                <p
+                    id="analysisText"
+                    class="text-muted">
                     Your result will appear here after analysis.
                 </p>
-
                 <hr>
-
-                <h6>Missing Skills</h6>
-                <div id="missingSkills"></div>
-
+                <h6>
+                    Missing Skills
+                </h6>
+                <div id="missingSkills">
+                </div>
             </div>
-
         </div>
-
     </div>
 </div>
 
+<!-- TOAST NOTIFICATION -->
+<div 
+    class="position-fixed top-0 start-50 translate-middle-x p-3"
+    style="z-index:9999;">
 
+    <div
+        id="atsToast"
+        class="toast align-items-center text-white bg-primary border-0"
+        role="alert">
+
+        <div class="d-flex">
+            <div
+                class="toast-body"
+                id="toastMessage">
+                Message
+            </div>
+            <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+               data-bs-dismiss="toast">
+            </button>
+        </div>
+   </div>
+</div>
 {% endblock %}
-
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/ats.js') }}"></script>
 {% endblock %}
