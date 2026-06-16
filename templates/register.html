@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register - AI Resume Builder
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row justify-content-center align-items-center min-vh-100">
+
+        <div class="col-lg-6 col-md-8 col-sm-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <h2 class="fw-bold">
+                            Create Your Account
+                        </h2>
+
+                        <p class="text-muted">
+                            Join AI Resume Builder today
+                        </p>
+
+                    </div>
+
+                    <form method="POST" id="registerForm">
+
+                        <!-- Full Name -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                name="name"
+                                placeholder="Enter Full Name"
+                                required>
+
+                        </div>
+
+                        <!-- Email -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control form-control-lg"
+                                name="email"
+                                placeholder="Enter Email Address"
+                                required>
+
+                        </div>
+
+                        <!-- Password -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="password"
+                                    class="form-control form-control-lg"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Create Password"
+                                    onkeyup="passwordStrength()"
+                                    required>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword()">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                            </div>
+
+                            <div class="mt-2">
+
+                                <div class="progress">
+
+                                    <div
+                                        id="strengthBar"
+                                        class="progress-bar"
+                                        role="progressbar"
+                                        style="width:0%">
+
+                                    </div>
+
+                                </div>
+
+                                <small
+                                    id="strengthText"
+                                    class="text-muted">
+
+                                    Password Strength
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Confirm Password -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Confirm Password
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control form-control-lg"
+                                id="confirmPassword"
+                                name="confirm_password"
+                                placeholder="Confirm Password"
+                                required>
+
+                            <small
+                                id="passwordMatch"
+                                class="text-danger">
+
+                            </small>
+
+                        </div>
+
+                        <!-- Terms -->
+
+                        <div class="form-check mb-4">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="terms"
+                                required>
+
+                            <label
+                                class="form-check-label"
+                                for="terms">
+
+                                I agree to the
+                                Terms & Conditions
+                                and Privacy Policy
+
+                            </label>
+
+                        </div>
+
+                        <!-- Submit -->
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success btn-lg">
+
+                                Create Account
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+
+                        <p>
+                            Already have an account?
+                        </p>
+
+                        <a
+                            href="/login"
+                            class="btn btn-outline-primary">
+
+                            Login Here
+
+                        </a>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+
+                        <small class="text-muted">
+
+                            Email Verification &
+                            Two-Factor Authentication Enabled
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+document
+.getElementById("registerForm")
+.addEventListener("submit", function(e){
+
+    let password =
+        document.getElementById(
+            "password"
+        ).value;
+
+    let confirmPassword =
+        document.getElementById(
+            "confirmPassword"
+        ).value;
+
+    if(password !== confirmPassword){
+
+        e.preventDefault();
+
+        document.getElementById(
+            "passwordMatch"
+        ).innerText =
+        "Passwords do not match";
+    }
+
+});
+
+</script>
+
+{% endblock %}
