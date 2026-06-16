@@ -36,3 +36,4 @@ class ATSService:
                 "missing_keywords": [],
                 "suggestions": [response]
             }
+        
