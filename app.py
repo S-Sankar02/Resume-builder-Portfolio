@@ -25,8 +25,6 @@ app.config.from_object(Config)
 db.init_app(app)
 mail.init_app(app)
 
-print("MAIL USER:", app.config["MAIL_USERNAME"])
-print("MAIL PASS:", app.config["MAIL_PASSWORD"])
 
 login_manager = LoginManager()
 login_manager.init_app(app)
