@@ -18,3 +18,4 @@ def dashboard():
         resumes=resumes,
         portfolios=portfolios
     )
+
