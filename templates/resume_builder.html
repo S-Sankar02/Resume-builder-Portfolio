@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f3f4f6;
+        }
+
+        .container{
+            display:flex;
+            min-height:100vh;
+        }
+
+        /* Sidebar */
+
+        .sidebar{
+            width:260px;
+            background:#111827;
+            color:white;
+            padding:20px;
+        }
+
+        .sidebar h2{
+            margin-bottom:20px;
+        }
+
+        .sidebar button{
+            width:100%;
+            padding:12px;
+            background:#10b981;
+            border:none;
+            color:white;
+            border-radius:8px;
+            cursor:pointer;
+            margin-bottom:20px;
+        }
+
+        #resumeList div{
+            padding:10px;
+            background:#1f2937;
+            margin-bottom:10px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        /* Form */
+
+        .editor{
+            width:420px;
+            background:white;
+            padding:25px;
+            overflow-y:auto;
+            border-right:1px solid #ddd;
+        }
+
+        .editor h2{
+            margin-bottom:20px;
+        }
+
+        .editor input,
+        .editor textarea{
+            width:100%;
+            padding:10px;
+            margin-bottom:15px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+
+        .editor textarea{
+            min-height:100px;
+        }
+
+        .actions button{
+            background:#ef4444;
+            color:white;
+            border:none;
+            padding:10px 18px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        /* Resume Preview */
+
+        .preview-section{
+            flex:1;
+            padding:30px;
+            overflow:auto;
+        }
+
+        .resume-preview{
+            width:800px;
+            min-height:1100px;
+            background:white;
+            margin:auto;
+            padding:40px;
+            box-shadow:0 0 15px rgba(0,0,0,.15);
+        }
+
+        .resume-preview h1{
+            font-size:32px;
+            color:#111827;
+        }
+
+        .resume-preview h2{
+            color:#2563eb;
+            margin-top:20px;
+            border-bottom:1px solid #ddd;
+            padding-bottom:5px;
+        }
+
+        .resume-preview p{
+            margin-top:8px;
+            line-height:1.6;
+        }
+
+        .contact{
+            color:#666;
+            margin-top:8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+        <h2>My Resumes</h2>
+
+        <button onclick="createResume()">
+            + New Resume
+        </button>
+
+        <div id="resumeList"></div>
+    </div>
+
+    <!-- Editor -->
+
+    <div class="editor">
+
+        <h2>Edit Resume</h2>
+
+        <input id="name"
+               placeholder="Full Name"
+               oninput="updatePreview()">
+
+        <input id="role"
+               placeholder="Job Title"
+               oninput="updatePreview()">
+
+        <input id="contact"
+               placeholder="Email | Phone | Location"
+               oninput="updatePreview()">
+
+        <textarea id="summary"
+                  placeholder="Professional Summary"
+                  oninput="updatePreview()"></textarea>
+
+        <textarea id="skills"
+                  placeholder="Skills"
+                  oninput="updatePreview()"></textarea>
+
+        <textarea id="experience"
+                  placeholder="Work Experience"
+                  oninput="updatePreview()"></textarea>
+
+        <textarea id="education"
+                  placeholder="Education"
+                  oninput="updatePreview()"></textarea>
+
+        <textarea id="projects"
+                  placeholder="Projects"
+                  oninput="updatePreview()"></textarea>
+
+        <div class="actions">
+
+            <button onclick="saveResume()" class="save-btn">
+                Save Resume
+            </button>
+
+            <button onclick="deleteResume()" class="delete-btn">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Resume Preview -->
+
+    <div class="preview-section">
+
+        <div class="resume-preview">
+
+            <h1 id="previewName">
+                Your Name
+            </h1>
+
+            <p id="previewRole">
+                Software Developer
+            </p>
+
+            <p class="contact" id="previewContact">
+                email@example.com | +91 XXXXXXXXXX
+            </p>
+
+            <h2>Professional Summary</h2>
+            <p id="previewSummary"></p>
+
+            <h2>Skills</h2>
+            <p id="previewSkills"></p>
+
+            <h2>Experience</h2>
+            <p id="previewExperience"></p>
+
+            <h2>Education</h2>
+            <p id="previewEducation"></p>
+
+            <h2>Projects</h2>
+            <p id="previewProjects"></p>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+let currentResumeId = null;
+
+/* ==========================
+   LOAD ALL RESUMES
+========================== */
+async function loadResumes() {
+
+    const response = await fetch("/resume/");
+    const resumes = await response.json();
+
+    const list = document.getElementById("resumeList");
+    list.innerHTML = "";
+
+    resumes.forEach(resume => {
+
+        const item = document.createElement("div");
+
+        item.innerText =
+            resume.title || "Untitled Resume";
+
+        item.onclick = () =>
+            loadResume(resume.id);
+
+        list.appendChild(item);
+    });
+}
+
+
+/* ==========================
+   LOAD SINGLE RESUME
+========================== */
+async function loadResume(id) {
+
+    const response =
+        await fetch(`/resume/${id}`);
+
+    const resume =
+        await response.json();
+
+    currentResumeId = resume.id;
+
+    document.getElementById("name").value =
+        resume.title || "";
+
+    document.getElementById("role").value =
+        resume.role || "";
+
+    document.getElementById("contact").value =
+        resume.contact || "";
+
+    document.getElementById("summary").value =
+        resume.summary || "";
+
+    document.getElementById("skills").value =
+        resume.skills || "";
+
+    document.getElementById("experience").value =
+        resume.experience || "";
+
+    document.getElementById("education").value =
+        resume.education || "";
+
+    document.getElementById("projects").value =
+        resume.projects || "";
+
+    updatePreview();
+}
+
+
+/* ==========================
+   CREATE NEW RESUME
+========================== */
+async function createResume() {
+
+    document
+        .querySelectorAll("input, textarea")
+        .forEach(el => {
+            el.value = "";
+        });
+
+    updatePreview();
+
+    const response =
+        await fetch("/resume/create", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                title: "New Resume",
+
+                role: "",
+                contact: "",
+
+                summary: "",
+                skills: "",
+                experience: "",
+                education: "",
+                projects: ""
+            })
+        });
+
+    const data =
+        await response.json();
+
+    currentResumeId = data.id;
+
+    await loadResumes();
+    await loadResume(data.id);
+}
+
+
+/* ==========================
+   SAVE RESUME
+========================== */
+async function saveResume() {
+
+    if (!currentResumeId) {
+
+        alert(
+            "Create or select a resume first"
+        );
+
+        return;
+    }
+
+    await fetch(
+        `/resume/${currentResumeId}`,
+        {
+            method: "PUT",
+
+            headers: {
+                "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+                title:
+                    document.getElementById("name").value,
+
+                role:
+                    document.getElementById("role").value,
+
+                contact:
+                    document.getElementById("contact").value,
+
+                summary:
+                    document.getElementById("summary").value,
+
+                skills:
+                    document.getElementById("skills").value,
+
+                experience:
+                    document.getElementById("experience").value,
+
+                education:
+                    document.getElementById("education").value,
+
+                projects:
+                    document.getElementById("projects").value
+            })
+        }
+    );
+
+    await loadResumes();
+
+    alert("Resume Saved Successfully");
+}
+
+
+/* ==========================
+   DELETE RESUME
+========================== */
+async function deleteResume() {
+
+    if (!currentResumeId)
+        return;
+
+    await fetch(
+        `/resume/${currentResumeId}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    currentResumeId = null;
+
+    document
+        .querySelectorAll("input, textarea")
+        .forEach(el => {
+            el.value = "";
+        });
+
+    updatePreview();
+
+    await loadResumes();
+
+    alert("Resume Deleted");
+}
+
+
+/* ==========================
+   LIVE PREVIEW
+========================== */
+function updatePreview() {
+
+    document.getElementById(
+        "previewName"
+    ).innerText =
+        document.getElementById(
+            "name"
+        ).value || "Your Name";
+
+    document.getElementById(
+        "previewRole"
+    ).innerText =
+        document.getElementById(
+            "role"
+        ).value || "Professional Title";
+
+    document.getElementById(
+        "previewContact"
+    ).innerText =
+        document.getElementById(
+            "contact"
+        ).value || "";
+
+    document.getElementById(
+        "previewSummary"
+    ).innerText =
+        document.getElementById(
+            "summary"
+        ).value || "";
+
+    document.getElementById(
+        "previewSkills"
+    ).innerText =
+        document.getElementById(
+            "skills"
+        ).value || "";
+
+    document.getElementById(
+        "previewExperience"
+    ).innerText =
+        document.getElementById(
+            "experience"
+        ).value || "";
+
+    document.getElementById(
+        "previewEducation"
+    ).innerText =
+        document.getElementById(
+            "education"
+        ).value || "";
+
+    document.getElementById(
+        "previewProjects"
+    ).innerText =
+        document.getElementById(
+            "projects"
+        ).value || "";
+}
+
+
+/* ==========================
+   AUTO SAVE
+========================== */
+document
+.querySelectorAll(
+    "input, textarea"
+)
+.forEach(field => {
+
+    field.addEventListener(
+        "input",
+        updatePreview
+    );
+});
+
+
+/* ==========================
+   INIT
+========================== */
+window.onload =
+async function () {
+
+    await loadResumes();
+
+    updatePreview();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .box { padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div class="box">
+    <h2>Users: {{ users|length }}</h2>
+</div>
+
+<div class="box">
+    <h2>Resumes: {{ resumes|length }}</h2>
+</div>
+
+<div class="box">
+    <h2>Portfolios: {{ portfolios|length }}</h2>
+</div>
+
+</body>
+</html>

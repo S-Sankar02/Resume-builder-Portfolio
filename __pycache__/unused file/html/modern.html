@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ portfolio.title }}</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background: #f5f5f5; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; }
+        .header { text-align: center; }
+        a { margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card header">
+    <h1>{{ portfolio.title }}</h1>
+    <p>{{ portfolio.bio }}</p>
+
+    <p>
+        <a href="{{ portfolio.github }}">GitHub</a>
+        <a href="{{ portfolio.linkedin }}">LinkedIn</a>
+        <a href="{{ portfolio.website }}">Website</a>
+    </p>
+</div>
+
+{% for section in sections %}
+<div class="card">
+    <h2>{{ section.title }}</h2>
+    <p>{{ section.content }}</p>
+</div>
+{% endfor %}
+
+</body>
+</html>
