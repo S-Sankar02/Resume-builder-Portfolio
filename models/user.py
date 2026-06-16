@@ -21,19 +21,28 @@ class User(UserMixin, db.Model):
     # =========================
 
     name = db.Column(
-        db.String(100),
-        nullable=False
+    db.String(100),
+    nullable=False
     )
 
     email = db.Column(
-        db.String(120),
-        unique=True,
-        nullable=False
+    db.String(120),
+    unique=True,
+    nullable=False
     )
 
     password = db.Column(
-        db.String(255),
-        nullable=False
+    db.String(255),
+    nullable=False
+    )
+
+    # =========================
+    # Profile Image
+    # =========================
+
+    profile_image = db.Column(
+    db.String(255),
+    nullable=True
     )
 
     # =========================
@@ -41,8 +50,8 @@ class User(UserMixin, db.Model):
     # =========================
 
     is_verified = db.Column(
-        db.Boolean,
-        default=False
+    db.Boolean,
+    default=False
     )
 
     email_verify_token = db.Column(
@@ -50,25 +59,7 @@ class User(UserMixin, db.Model):
         nullable=True
     )
 
-    # =========================
-    # OTP Authentication
-    # =========================
-
-    otp_secret = db.Column(
-        db.String(255),
-        nullable=True
-    )
-
-    login_otp = db.Column(
-        db.String(10),
-        nullable=True
-    )
-
-    login_otp_expiry = db.Column(
-        db.DateTime,
-        nullable=True
-    )
-
+  
     # =========================
     # Password Reset
     # =========================
