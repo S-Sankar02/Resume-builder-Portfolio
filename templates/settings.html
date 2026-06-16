@@ -15,13 +15,13 @@ Settings - AI Resume Builder
 
                 <div class="card-body text-center">
 
-                    <img
-                        src="{{ current_user.profile_image if current_user.profile_image else '/static/images/default-user.png' }}"
-                        class="rounded-circle mb-3"
-                        width="120"
-                        height="120"
-                    >
-
+                <img
+                    id="profilePreview"
+                    src="{{ current_user.profile_image if current_user.profile_image else '/static/images/default-user.png' }}"
+                    class="rounded-circle mb-3"
+                    width="120"
+                    height="120"
+                >
                     <h4>
                         {{ current_user.name }}
                     </h4>
@@ -29,22 +29,32 @@ Settings - AI Resume Builder
                     <p class="text-muted">
                         {{ current_user.email }}
                     </p>
+                   
                     <form method="POST" enctype="multipart/form-data">
 
                         <label class="btn btn-outline-primary btn-sm">
 
-                            Change Photo
+                        Change Photo
 
-                            <input
-                                type="file"
-                                name="profile_image"
-                                hidden
-                            >
+                        <input
+                            type="file"
+                            name="profile_image"
+                            id="profileImageInput"
+                            hidden
+                            onchange="previewImage(event)"
+                        >
 
                         </label>
 
+
+                        <button class="btn btn-primary btn-sm mt-2">
+                            Upload
+                        </button>
+
+
                     </form>
-                    <hr>
+
+                     <hr>
                     <p>
                         {% if current_user.email_verified %}
 
@@ -168,57 +178,134 @@ Settings - AI Resume Builder
             </div>
             <br>
             <!-- Danger Zone -->
-            <div class="card shadow border-danger">
-                <div class="card-header bg-danger text-white">
 
-                    <h5>
-                        Danger Zone
-                    </h5>
-                </div>
-                <div class="card-body">
+<div class="card shadow border-danger">
 
-                    <p>
-                        Deleting your account removes all resumes and portfolios permanently.
-                    </p>
-                    <button
-                        class="btn btn-danger"
-                        onclick="confirmDelete()"
-                    >
-                        Delete Account
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="card-header bg-danger text-white">
+
+        <h5>
+            Danger Zone
+        </h5>
+
     </div>
+
+
+    <div class="card-body">
+
+        <p>
+            Deleting your account removes all resumes and portfolios permanently.
+        </p>
+
+
+        <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+        >
+            Delete Account
+        </button>
+
+
+    </div>
+
 </div>
+
+
+<!-- Delete Confirmation Modal -->
+
+<div class="modal fade" id="deleteModal">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header bg-danger text-white">
+
+                <h5 class="modal-title">
+                    Delete Account
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+
+            </div>
+
+
+            <div class="modal-body">
+
+                Are you sure you want to delete your account?
+
+                <br>
+
+                All resumes and portfolios will be permanently deleted.
+
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+
+                <a
+                    href="/delete-account"
+                    class="btn btn-danger">
+
+                    Delete
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
+
 function showPassword() {
 
     let p = document.getElementById("password");
+
 
     if (p.type === "password") {
 
         p.type = "text";
 
-    } else {
+    } 
+    else {
 
         p.type = "password";
 
     }
 
 }
+function previewImage(event){
 
-function confirmDelete() {
+    let image = document.getElementById("profilePreview");
 
-    if (confirm("Are you sure you want to delete your account?")) {
-
-        window.location.href = "/delete-account";
-
-    }
+    image.src = URL.createObjectURL(event.target.files[0]);
 
 }
 
 </script>
-
 
 {% endblock %}
