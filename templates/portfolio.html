@@ -282,7 +282,7 @@
 
 </div>
 <script>
-let portfolioId = document.getElementById("portfolioId").value;
+let portfolioId = document.getElementById("portfolioId")?.value || null;
 
 let state = {
     hero: {},
