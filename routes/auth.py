@@ -110,11 +110,6 @@ def register():
             verification_link
         )
 
-        send_welcome_email(
-            email,
-            name
-        )
-
         flash(
             "Registration successful. Verify your email."
         )
@@ -233,79 +228,6 @@ def login():
             return redirect("/login")
 
     return render_template("login.html")
-
-# ====================================
-# OTP VERIFY
-# ====================================
-
-@auth.route(
-    "/verify-otp/<int:user_id>",
-    methods=["GET", "POST"]
-)
-def verify_otp(user_id):
-
-    user = User.query.get(
-        user_id
-    )
-
-    if not user:
-
-        return redirect(
-            "/login"
-        )
-
-    if request.method == "POST":
-
-        otp = request.form.get(
-            "otp"
-        )
-
-        if (
-            user.login_otp == otp
-            and datetime.utcnow()
-            <= user.login_otp_expiry
-        ):
-
-            login_user(
-                user,
-                remember=True
-            )
-
-            user.login_otp = None
-
-            user.last_login = (
-                datetime.utcnow()
-            )
-
-            history = LoginHistory(
-                user_id=user.id,
-                ip_address=request.remote_addr,
-                browser=request.user_agent.string,
-                login_status="SUCCESS"
-            )
-
-            db.session.add(
-                history
-            )
-
-            db.session.commit()
-
-            flash(
-                "Login successful."
-            )
-
-            return redirect(
-                "/dashboard"
-            )
-
-        flash(
-            "Invalid OTP."
-        )
-
-    return render_template(
-        "verify_otp.html"
-    )
-
 
 # ====================================
 # LOGOUT
