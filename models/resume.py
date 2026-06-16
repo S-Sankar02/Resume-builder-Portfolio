@@ -1,7 +1,6 @@
 from datetime import datetime
 from models import db
 
-
 class Resume(db.Model):
     __tablename__ = "resumes"
 
