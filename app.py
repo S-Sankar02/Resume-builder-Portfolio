@@ -15,6 +15,11 @@ from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
 
 from models.portfolio import Portfolio
+from flask import request, flash, redirect, url_for, render_template
+
+from flask_login import login_required, current_user
+
+from flask_bcrypt import Bcrypt
 
 # =========================
 # APP INIT
@@ -84,11 +89,37 @@ def resume_builder():
     return render_template("resume_builder.html")
 
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
-    return render_template("settings.html")
 
+    if request.method == "POST":
+
+        name = request.form.get("name")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        current_user.name = name
+
+        if password:
+            if password == confirm_password:
+
+                current_user.password = Bcrypt.generate_password_hash(password).decode("utf-8")
+
+            else:
+
+                flash("Passwords do not match", "danger")
+                return redirect(url_for("settings"))
+
+
+        db.session.commit()
+
+        flash("Settings updated successfully!", "success")
+
+        return redirect(url_for("settings"))
+
+
+    return render_template("settings.html")
 
 @app.route("/ats-checker")
 @login_required
