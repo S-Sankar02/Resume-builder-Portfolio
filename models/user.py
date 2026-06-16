@@ -151,19 +151,19 @@ class User(UserMixin, db.Model):
     # =========================
     # Serialization
     # =========================
+def to_dict(self):
 
-    def to_dict(self):
-
-        return {
-            "id": self.id,
-            "name": self.name,
-            "email": self.email,
-            "is_verified": self.is_verified,
-            "account_locked": self.account_locked,
-            "failed_attempts": self.failed_attempts,
-            "last_login": self.last_login,
-            "created_at": self.created_at
-        }
+    return {
+        "id": self.id,
+        "name": self.name,
+        "email": self.email,
+        "profile_image": self.profile_image,
+        "is_verified": self.is_verified,
+        "account_locked": self.account_locked,
+        "failed_attempts": self.failed_attempts,
+        "last_login": self.last_login,
+        "created_at": self.created_at
+    }
 
     # =========================
     # Debug Representation
