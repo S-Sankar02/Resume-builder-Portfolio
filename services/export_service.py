@@ -4,7 +4,6 @@ from reportlab.lib.pagesizes import letter
 from flask import current_app
 from models.portfolio import Portfolio
 
-
 class ExportService:
 
     @staticmethod
