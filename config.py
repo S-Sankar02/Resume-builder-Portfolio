@@ -4,7 +4,6 @@ from datetime import timedelta
 
 load_dotenv()
 
-
 class Config:
 
     # =========================
