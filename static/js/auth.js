@@ -43,7 +43,6 @@ function toggleConfirmPassword() {
 }
 
 
-
 /* PASSWORD STRENGTH */
 
 function passwordStrength() {
@@ -52,10 +51,8 @@ function passwordStrength() {
     const password =
     document.getElementById("password");
 
-
     const bar =
     document.getElementById("strengthBar");
-
 
     const text =
     document.getElementById("strengthText");
@@ -64,13 +61,8 @@ function passwordStrength() {
     if (!password || !bar || !text)
         return;
 
-
-
     let value = password.value;
-
     let score = 0;
-
-
 
     if (value.length >= 8)
         score++;
@@ -87,195 +79,91 @@ function passwordStrength() {
     if (/[!@#$%^&*]/.test(value))
         score++;
 
-
-
-
     if (score <= 2) {
 
-
         bar.style.width = "30%";
-
         bar.className =
         "progress-bar bg-danger";
-
 
         text.innerText =
         "Weak Password";
 
-
     }
-
 
     else if(score <= 4){
 
-
         bar.style.width = "70%";
-
         bar.className =
         "progress-bar bg-warning";
-
 
         text.innerText =
         "Medium Password";
 
-
     }
 
-
     else{
-
-
         bar.style.width = "100%";
-
         bar.className =
         "progress-bar bg-success";
 
-
         text.innerText =
         "Strong Password";
-
-
     }
 
-
 }
-
-
-
-
-
-
 /* GLOBAL TOAST */
-
-
 function showToast(message, type="danger"){
-
-
     let toast =
     document.getElementById("globalToast");
 
-
     if(!toast)
         return;
-
-
-
     toast.innerHTML = message;
-
-
-
     toast.className =
     "toast-message " + type;
-
-
-
     toast.style.display =
     "block";
-
-
-
     setTimeout(function(){
-
-
         toast.style.display =
         "none";
-
-
     },3000);
-
-
 }
-
-
-
-
-
 
 /* EMAIL VALIDATION */
-
-
 function validateEmail(email){
-
-
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-
 }
-
-
-
-
-
 /* LOGIN VALIDATION */
-
-
 function validateLoginForm(){
-
-
     const email =
     document.querySelector(
         "input[name='email']"
     );
-
-
     const password =
     document.querySelector(
         "input[name='password']"
     );
 
-
-
     if(!email || !password)
         return true;
 
-
-
     if(!validateEmail(email.value)){
-
-
         showToast(
             "Enter valid email"
         );
-
-
         return false;
-
     }
-
-
-
-
     if(password.value.length < 6){
-
-
         showToast(
             "Password too short"
         );
-
-
         return false;
-
     }
-
-
-
     return true;
-
-
 }
 
-
-
-
-
-
-
 /* REGISTER VALIDATION */
-
-
 function validateRegisterForm(){
-
-
 
     const email =
     document.querySelector(
@@ -288,91 +176,55 @@ function validateRegisterForm(){
         "password"
     );
 
-
     const confirm =
     document.getElementById(
         "confirmPassword"
     );
 
-
-
-
     if(!email || !password || !confirm)
         return true;
 
-
-
-
-
     if(!validateEmail(email.value)){
-
 
         showToast(
             "Invalid email"
         );
 
-
         return false;
 
     }
 
-
-
-
-
     if(password.value.length < 8){
-
 
         showToast(
             "Minimum 8 characters required"
         );
 
-
         return false;
 
     }
 
-
-
-
-
     if(password.value !== confirm.value){
-
 
         showToast(
             "Passwords do not match"
         );
 
-
         return false;
 
     }
-
-
-
-
     return true;
-
-
 }
-
-
-
-
-
 
 /* ==========================================
    DARK MODE
 ========================================== */
 
-
 function toggleTheme(){
-
 
     document.body.classList.toggle(
         "dark-mode"
     );
-
 
     localStorage.setItem(
 
@@ -388,17 +240,11 @@ function toggleTheme(){
 
     );
 
-
 }
-
-
-
-
 
 window.addEventListener(
 "load",
 function(){
-
 
     if(localStorage.getItem("theme")==="dark"){
 
@@ -408,25 +254,15 @@ function(){
 
     }
 
-
 });
-
-
-
-
-
-
 
 /* ==========================================
    RESUME BUILDER
 ========================================== */
 
-
 let currentResumeId = null;
 
 let autosaveTimer = null;
-
-
 
 async function createResume(){
 
@@ -453,27 +289,17 @@ async function createResume(){
     });
 
 
-
     const data =
     await res.json();
-
 
 
     currentResumeId =
     data.id;
 
 
-
     loadResumes();
 
-
 }
-
-
-
-
-
-
 
 async function loadResumes(){
 
@@ -535,12 +361,6 @@ async function loadResumes(){
 
 }
 
-
-
-
-
-
-
 async function loadResume(id){
 
 
@@ -574,12 +394,6 @@ async function loadResume(id){
 
 
 }
-
-
-
-
-
-
 function autosave(){
 
 
@@ -634,22 +448,13 @@ function autosave(){
 
     },800);
 
-
-
 }
-
-
-
-
-
 
 /* ==========================================
    ATS CHECKER
 ========================================== */
 
-
 async function checkATS(){
-
 
 const file =
 document.getElementById("resumeFile");
@@ -711,23 +516,11 @@ body:formData
 const data =
 await res.json();
 
-
-
 if(document.getElementById("score"))
-
 document.getElementById("score").innerText =
 (data.score || 0)+"%";
 
-
-
 }
-
-
-
-
-
-
-
 /* ==========================================
    PORTFOLIO
 ========================================== */
@@ -785,11 +578,6 @@ renderProjects();
 
 }
 
-
-
-
-
-
 function renderProjects(){
 
 
@@ -840,16 +628,9 @@ View Project
 grid.appendChild(card);
 
 
-
 });
 
-
 }
-
-
-
-
-
 
 
 console.log(
