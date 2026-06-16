@@ -83,11 +83,69 @@
                     class="form-control mb-3"
                     placeholder="LinkedIn URL">
 
-                <input
+               <input
                     type="text"
                     id="email"
                     class="form-control mb-3"
                     placeholder="Email Address">
+
+                <hr>
+
+                <h5 class="mb-3">Project</h5>
+
+                <input
+                    type="text"
+                    id="projectTitle"
+                    class="form-control mb-2"
+                    placeholder="Project Title">
+
+                <textarea
+                    id="projectDescription"
+                    class="form-control mb-3"
+                    rows="3"
+                    placeholder="Project Description"></textarea>
+
+                <h5 class="mb-3">Experience</h5>
+
+                <input
+                    type="text"
+                    id="experienceTitle"
+                    class="form-control mb-2"
+                    placeholder="Experience Title">
+
+                <textarea
+                    id="experienceDescription"
+                    class="form-control mb-3"
+                    rows="3"
+                    placeholder="Experience Description"></textarea>
+
+                <h5 class="mb-3">Education</h5>
+
+                <input
+                    type="text"
+                    id="degree"
+                    class="form-control mb-2"
+                    placeholder="Degree">
+
+                <input
+                    type="text"
+                    id="college"
+                    class="form-control mb-3"
+                    placeholder="College / University">
+
+                <h5 class="mb-3">Contact Details</h5>
+
+                <input
+                    type="text"
+                    id="phone"
+                    class="form-control mb-2"
+                    placeholder="Phone Number">
+
+                <input
+                    type="text"
+                    id="location"
+                    class="form-control mb-3"
+                    placeholder="Location">
 
 
             </div>
@@ -98,264 +156,588 @@
         <!-- PORTFOLIO PREVIEW -->
         <!-- ========================= -->
 
-        <div class="col-lg-8">
 
-            <div class="portfolio-preview">
+            <div class="col-lg-8">
 
-                <!-- HERO SECTION -->
+                <div class="portfolio-preview">
 
-                <section class="hero-section text-center">
+                    <!-- HERO -->
 
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                        class="profile-image">
-                    <h1 id="previewName">
-                        John Doe
-                    </h1>
+                    <section class="hero-section text-center">
 
-                    <h4 id="previewTitle">
-                        Full Stack Developer
-                    </h4>
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                            class="profile-image">
 
-                    <p id="previewAbout">
-                        Passionate developer creating modern web applications.
-                    </p>
+                        <h1 id="previewName"></h1>
 
-                    <div class="mt-3">
+                        <h4 id="previewTitle"></h4>
 
-                        <a href="#" id="githubBtn"
-                           class="btn btn-dark me-2">
+                        <p id="previewAbout"></p>
 
-                            GitHub
+                        <div class="mt-3">
 
-                        </a>
+                            <a href="#"
+                            id="githubBtn"
+                            class="btn btn-dark me-2 d-none">
+                                GitHub
+                            </a>
 
-                        <a href="#" id="linkedinBtn"
-                           class="btn btn-primary">
-
-                            LinkedIn
-
-                        </a>
-
-                    </div>
-
-                </section>
-
-                <!-- ABOUT -->
-
-                <section class="portfolio-section">
-
-                    <h3>About Me</h3>
-
-                    <p id="previewAbout2">
-                        Passionate developer creating modern web applications.
-                    </p>
-
-                </section>
-
-                <!-- SKILLS -->
-
-                <section class="portfolio-section">
-
-                    <h3>Skills</h3>
-
-                    <div id="skillsContainer">
-
-                        <span class="skill-tag">
-                            Python
-                        </span>
-
-                        <span class="skill-tag">
-                            Flask
-                        </span>
-
-                        <span class="skill-tag">
-                            MySQL
-                        </span>
-
-                    </div>
-
-                </section>
-
-                <!-- PROJECTS -->
-
-                <section class="portfolio-section">
-
-                    <h3>Featured Projects</h3>
-
-                    <div class="row">
-
-                        <div class="col-md-6">
-
-                            <div class="project-card">
-
-                                <h5>AI Resume Builder</h5>
-
-                                <p>
-                                    AI powered ATS resume generator.
-                                </p>
-
-                            </div>
+                            <a href="#"
+                            id="linkedinBtn"
+                            class="btn btn-primary d-none">
+                                LinkedIn
+                            </a>
 
                         </div>
 
-                        <div class="col-md-6">
+                    </section>
 
-                            <div class="project-card">
+                    <!-- ABOUT -->
 
-                                <h5>Portfolio Generator</h5>
+                    <section class="portfolio-section">
 
-                                <p>
-                                    Dynamic portfolio website builder.
-                                </p>
+                        <h3>About Me</h3>
 
-                            </div>
+                        <p id="previewAbout2"></p>
 
-                        </div>
+                    </section>
 
-                    </div>
+                    <!-- SKILLS -->
 
-                </section>
+                    <section class="portfolio-section">
 
-                <!-- EXPERIENCE -->
+                        <h3>Skills</h3>
 
-                <section class="portfolio-section">
+                        <div id="skillsContainer"></div>
 
-                    <h3>Experience</h3>
+                    </section>
 
-                    <div class="timeline">
+                    <!-- PROJECTS -->
 
-                        <div class="timeline-item">
+                    <section class="portfolio-section">
 
-                            <h5>AI Internship</h5>
+                        <h3>Projects</h3>
 
-                            <p>
-                                Flask, OpenAI API,
-                                SQLAlchemy, Authentication
-                            </p>
+                        <div id="projectContainer"></div>
 
-                        </div>
+                    </section>
 
-                    </div>
+                    <!-- EXPERIENCE -->
 
-                </section>
+                    <section class="portfolio-section">
 
-                <!-- EDUCATION -->
+                        <h3>Experience</h3>
 
-                <section class="portfolio-section">
+                        <div id="experienceContainer"></div>
 
-                    <h3>Education</h3>
+                    </section>
 
-                    <div class="project-card">
+                    <!-- EDUCATION -->
 
-                        <h5>Bachelor Degree</h5>
+                    <section class="portfolio-section">
 
-                        <p>
-                            Computer Science / IT
-                        </p>
+                        <h3>Education</h3>
 
-                    </div>
+                        <div id="educationContainer"></div>
 
-                </section>
+                    </section>
 
-                <!-- CONTACT -->
+                    <!-- CONTACT -->
 
                 <section class="portfolio-section text-center">
 
                     <h3>Contact</h3>
 
-                    <p id="previewEmail">
-                        example@email.com
-                    </p>
+                    <p id="previewEmail"></p>
 
-                    <button class="btn btn-primary">
-                        Hire Me
-                    </button>
+                    <p id="previewPhone"></p>
+
+                    <p id="previewLocation"></p>
 
                 </section>
 
+                </div>
+
             </div>
 
-        </div>
+                </div>
 
-    </div>
 
-</div>
-<script>
-let portfolioId = document.getElementById("portfolioId")?.value || null;
+                <!-- Custom Toast -->
+                <div id="customToast">
+                    Portfolio Saved Successfully
+                </div>
+                <style>
 
-let state = {
-    hero: {},
-    skills: [],
-    contact: {}
-};
+                #customToast{
 
-// =====================
-// COLLECT DATA
-// =====================
-function collect() {
-    state.hero = {
-        name: fullName.value,
-        title: title.value,
-        bio: about.value
-    };
+                    position:fixed;
 
-    state.skills = skills.value
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean);
+                    top:80px;
 
-    state.contact = {
-        email: email.value,
-        github: githubInput.value,
-        linkedin: linkedinInput.value
-    };
-}
+                    left:50%;
 
-// =====================
-// RENDER
-// =====================
-function render() {
-    previewName.innerText = state.hero.name || "John Doe";
-    previewTitle.innerText = state.hero.title || "";
-    previewAbout.innerText = state.hero.bio || "";
+                    transform:translateX(-50%);
 
-    skillsContainer.innerHTML =
-        state.skills.map(s => `<span class="skill-tag">${s}</span>`).join("");
+                    background:#198754;
 
-    previewEmail.innerText = state.contact.email || "";
-}
+                    color:white;
 
-// =====================
-// LIVE UPDATE
-// =====================
-document.querySelectorAll("input, textarea").forEach(el => {
-    el.addEventListener("input", () => {
-        collect();
-        render();
-    });
-});
+                    padding:12px 25px;
 
-// =====================
-// SAVE
-// =====================
-async function savePortfolio() {
-    await fetch(`/portfolio/update/${portfolioId}`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(state)
-    });
+                    border-radius:8px;
 
-    alert("Saved Successfully");
-}
+                    font-weight:600;
 
-// =====================
-// EXPORT
-// =====================
-document.getElementById("exportPortfolioBtn")
-.addEventListener("click", () => {
-    window.location.href = `/portfolio/export/${portfolioId}`;
-});
-</script>
+                    z-index:999999;
+
+                    display:none;
+
+                }
+
+                </style>
+                 </div>
+                    
+                <script>
+
+                    let portfolioId =
+                        document.getElementById("portfolioId")?.value || null;
+
+
+                    let state = {
+
+                        hero:{},
+                        skills:[],
+                        contact:{},
+                        project:{},
+                        experience:{},
+                        education:{}
+
+                    };
+
+
+                    // ======================
+                    // TOAST
+                    // ======================
+
+                    function showToast(message, success=true){
+
+                        console.log("SHOW TOAST:", message);
+
+
+                        const toast = document.getElementById("customToast");
+
+
+                        if(!toast){
+                            console.log("Toast missing");
+                            return;
+                        }
+
+
+                        toast.innerText = message;
+
+
+                        toast.style.backgroundColor =
+                            success ? "#198754" : "#dc3545";
+
+
+                        toast.style.display="block";
+
+
+                        setTimeout(()=>{
+
+                            toast.style.display="none";
+
+                        },3000);
+
+                    }
+
+
+
+                    // ======================
+                    // COLLECT DATA
+                    // ======================
+
+                    function collect(){
+
+
+                        state.hero={
+
+                            name:
+                            document.getElementById("fullName").value,
+
+                            title:
+                            document.getElementById("title").value,
+
+                            bio:
+                            document.getElementById("about").value
+
+                        };
+
+
+
+                        state.skills =
+                        document.getElementById("skills")
+                        .value
+                        .split(",")
+                        .map(x=>x.trim())
+                        .filter(Boolean);
+
+
+
+                        state.contact={
+
+
+                            email:
+                            document.getElementById("email").value,
+
+
+                            github:
+                            document.getElementById("githubInput").value,
+
+
+                            linkedin:
+                            document.getElementById("linkedinInput").value,
+
+
+                            phone:
+                            document.getElementById("phone").value,
+
+
+                            location:
+                            document.getElementById("location").value
+
+                        };
+
+
+
+                        state.project={
+
+                            title:
+                            document.getElementById("projectTitle").value,
+
+
+                            description:
+                            document.getElementById("projectDescription").value
+
+                        };
+
+
+
+                        state.experience={
+
+                            title:
+                            document.getElementById("experienceTitle").value,
+
+
+                            description:
+                            document.getElementById("experienceDescription").value
+
+                        };
+
+
+
+                        state.education={
+
+
+                            degree:
+                            document.getElementById("degree").value,
+
+
+                            college:
+                            document.getElementById("college").value
+
+                        };
+
+
+                    }
+
+
+
+                    // ======================
+                    // RENDER
+                    // ======================
+
+                    function render(){
+
+
+                    document.getElementById("previewName").innerText =
+                    state.hero.name || "";
+
+
+                    document.getElementById("previewTitle").innerText =
+                    state.hero.title || "";
+
+
+                    document.getElementById("previewAbout").innerText =
+                    state.hero.bio || "";
+
+
+                    document.getElementById("previewAbout2").innerText =
+                    state.hero.bio || "";
+
+
+
+                    document.getElementById("previewEmail").innerText =
+                    state.contact.email || "";
+
+
+                    document.getElementById("previewPhone").innerText =
+                    state.contact.phone || "";
+
+
+                    document.getElementById("previewLocation").innerText =
+                    state.contact.location || "";
+
+
+
+                    document.getElementById("skillsContainer").innerHTML =
+
+                    state.skills.map(skill=>`
+
+                    <span class="skill-tag">
+
+                    ${skill}
+
+                    </span>
+
+                    `).join("");
+
+
+
+                    document.getElementById("projectContainer").innerHTML=`
+
+                    <div class="project-card">
+
+                    <h5>
+                    ${state.project.title || ""}
+                    </h5>
+
+
+                    <p>
+                    ${state.project.description || ""}
+                    </p>
+
+
+                    </div>
+
+                    `;
+
+
+
+                    document.getElementById("experienceContainer").innerHTML=`
+
+                    <div class="project-card">
+
+                    <h5>
+                    ${state.experience.title || ""}
+                    </h5>
+
+
+                    <p>
+                    ${state.experience.description || ""}
+                    </p>
+
+
+                    </div>
+
+                    `;
+
+
+
+                    document.getElementById("educationContainer").innerHTML=`
+
+                    <div class="project-card">
+
+                    <h5>
+                    ${state.education.degree || ""}
+                    </h5>
+
+
+                    <p>
+                    ${state.education.college || ""}
+                    </p>
+
+
+                    </div>
+
+                    `;
+
+
+
+                    }
+
+
+
+                    // ======================
+                    // LIVE PREVIEW
+                    // ======================
+
+                    document
+                    .querySelectorAll("input,textarea")
+                    .forEach(el=>{
+
+
+                    el.addEventListener("input",()=>{
+
+
+                    collect();
+
+                    render();
+
+
+                    });
+
+
+                    });
+
+
+
+
+                    // ======================
+                    // SAVE BUTTON
+                    // ======================
+
+                    document.addEventListener("DOMContentLoaded", function(){
+
+
+                        const saveBtn =
+                        document.getElementById("savePortfolioBtn");
+
+
+                        if(!saveBtn){
+
+                            console.log("Save button missing");
+
+                            return;
+
+                        }
+
+
+
+                        saveBtn.onclick = async function(){
+
+
+                            collect();
+
+
+
+                            let response =
+                            await fetch(
+                                `/portfolio/update/${portfolioId}`,
+                                {
+
+                                    method:"POST",
+
+                                    headers:{
+
+                                        "Content-Type":"application/json"
+
+                                    },
+
+                                    body:JSON.stringify(state)
+
+                                }
+
+                            );
+
+
+
+                            let data =
+                            await response.json();
+
+
+
+                            console.log(data);
+
+
+
+                            const toast =
+                            document.getElementById("customToast");
+
+
+
+                            toast.innerHTML =
+                            "Portfolio Saved Successfully";
+
+
+
+                            toast.style.display="block";
+
+
+
+                            toast.style.background="#198754";
+
+
+
+                            setTimeout(()=>{
+
+                                toast.style.display="none";
+
+                            },3000);
+
+
+
+                        };
+
+
+                    });
+
+                    // ======================
+                    // EXPORT PDF
+                    // ======================
+
+
+                    document
+                    .getElementById("exportPortfolioBtn")
+                    .addEventListener("click",()=>{
+
+
+                    if(!portfolioId){
+
+
+                    showToast(
+
+                    "Save Portfolio First",
+
+                    false
+
+                    );
+
+
+                    return;
+
+                    }
+
+
+                    window.location.href =
+
+                    `/portfolio/export/${portfolioId}`;
+
+
+                    });
+
+
+
+
+                    // ======================
+                    // LOAD
+                    // ======================
+
+
+                    window.onload=()=>{
+
+
+                    collect();
+
+                    render();
+
+
+                    };
+
+
+                    </script>
 {% endblock %}
 
+    
