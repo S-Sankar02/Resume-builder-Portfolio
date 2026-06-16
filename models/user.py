@@ -3,7 +3,6 @@ from flask_login import UserMixin
 from datetime import datetime
 from models import db
 
-
 class User(UserMixin, db.Model):
 
     __tablename__ = "users"
@@ -185,11 +184,3 @@ class User(UserMixin, db.Model):
             f"<User {self.id} "
             f"{self.email}>"
         )
-    
-# from flask_login import UserMixin
-# from . import db
-
-# class User(db.Model, UserMixin):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(150), unique=True, nullable=False)
-#     password = db.Column(db.String(200), nullable=False)
