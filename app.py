@@ -1,11 +1,20 @@
+import os
 import PyPDF2
 import docx
 
-from flask import Flask, render_template, redirect, url_for, request, jsonify
+from werkzeug.utils import secure_filename
+
+from flask import Flask, render_template, redirect, url_for, request, jsonify, flash
+
 from flask_login import LoginManager, login_required, current_user
 
+from flask_bcrypt import Bcrypt
+
 from config import Config
+
 from models.user import db, User
+from models.portfolio import Portfolio
+
 from services.email_service import mail
 
 from routes.auth import auth
@@ -13,19 +22,12 @@ from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
-
-from models.portfolio import Portfolio
-from flask import request, flash, redirect, url_for, render_template
-
-from flask_login import login_required, current_user
-
-from flask_bcrypt import Bcrypt
-
 # =========================
 # APP INIT
 # =========================
 app = Flask(__name__)
 app.config.from_object(Config)
+bcrypt = Bcrypt(app)
 
 db.init_app(app)
 mail.init_app(app)
@@ -88,38 +90,83 @@ def portfolio_builder():
 def resume_builder():
     return render_template("resume_builder.html")
 
-
 @app.route("/settings", methods=["GET", "POST"])
 @login_required
 def settings():
 
     if request.method == "POST":
 
+        # Update name only if provided
         name = request.form.get("name")
+
+        if name:
+            current_user.name = name
+
+
+        # Password update
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
-        current_user.name = name
-
         if password:
-            if password == confirm_password:
 
-                current_user.password = Bcrypt.generate_password_hash(password).decode("utf-8")
-
-            else:
+            if password != confirm_password:
 
                 flash("Passwords do not match", "danger")
+
                 return redirect(url_for("settings"))
+
+            current_user.password = bcrypt.generate_password_hash(
+                password
+            ).decode("utf-8")
+
+
+        # Profile image upload
+        image = request.files.get("profile_image")
+
+        print("IMAGE =", image)
+
+
+        if image and image.filename:
+
+            upload_folder = os.path.join(
+                app.root_path,
+                "static",
+                "uploads"
+            )
+
+            os.makedirs(upload_folder, exist_ok=True)
+
+            filename = secure_filename(image.filename)
+
+            image_path = os.path.join(
+                upload_folder,
+                filename
+            )
+
+            image.save(image_path)
+
+            current_user.profile_image = (
+                "/static/uploads/" + filename
+            )
+
+            print(
+                "DB PATH =",
+                current_user.profile_image
+            )
 
 
         db.session.commit()
 
-        flash("Settings updated successfully!", "success")
+        flash(
+            "Settings updated successfully!",
+            "success"
+        )
 
         return redirect(url_for("settings"))
 
-
     return render_template("settings.html")
+
+
 
 @app.route("/ats-checker")
 @login_required
