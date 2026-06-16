@@ -55,3 +55,4 @@ class AIRouter:
         Improve ATS keywords and structure.
         """
         return AIRouter._route(provider, prompt)
+    
