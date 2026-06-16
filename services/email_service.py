@@ -3,29 +3,40 @@ from flask_mail import Message
 from flask import current_app
 import traceback
 
+
 mail = Mail()
+
+
+# ====================================
+# GENERIC EMAIL SENDER
+# ====================================
 
 def send_email(
     recipient,
     subject,
     body
 ):
-    """
-    Generic Email Sender
-    """
 
     try:
 
         msg = Message(
             subject=subject,
+            sender=current_app.config["MAIL_USERNAME"],
             recipients=[recipient]
         )
 
-        msg.body = body
+
+        # HTML email
+        msg.html = body
+
 
         mail.send(msg)
 
+
+        print("EMAIL SENT SUCCESS")
+
         return True
+
 
     except Exception as e:
 
@@ -38,31 +49,86 @@ def send_email(
         return False
 
 
+
+# ====================================
+# VERIFY EMAIL
+# ====================================
+
 def send_verification_email(
     recipient,
     verification_link
 ):
-    """
-    Account Verification Email
-    """
 
-    subject = "Verify Your Account"
+    subject = "Verify Your AI Resume Builder Account"
+
 
     body = f"""
-Hello,
 
-Welcome to AI Resume Builder.
+<html>
 
-Please verify your email address by clicking the link below:
+<body>
 
+<h2>
+Welcome to AI Resume Builder 🚀
+</h2>
+
+
+<p>
+Your account has been created successfully.
+</p>
+
+
+<p>
+Please verify your email address:
+</p>
+
+
+<br>
+
+
+<a href="{verification_link}"
+style="
+background:#0d6efd;
+color:white;
+padding:12px 25px;
+text-decoration:none;
+border-radius:6px;
+font-size:16px;
+">
+
+Verify Email
+
+</a>
+
+
+<br><br>
+
+
+<p>
+If the button does not work, copy this link:
+</p>
+
+
+<p>
 {verification_link}
+</p>
 
-If you did not create an account,
-please ignore this email.
 
-Regards,
+<p>
+
+Regards,<br>
+
 AI Resume Builder Team
+
+</p>
+
+
+</body>
+
+</html>
+
 """
+
 
     return send_email(
         recipient,
@@ -70,34 +136,79 @@ AI Resume Builder Team
         body
     )
 
+
+
+
+# ====================================
+# RESET PASSWORD
+# ====================================
 
 def send_reset_password_email(
     recipient,
     reset_link
 ):
-    """
-    Password Reset Email
-    """
+
 
     subject = "Reset Your Password"
 
+
     body = f"""
-Hello,
 
+
+<html>
+
+<body>
+
+
+<h2>
+Password Reset Request
+</h2>
+
+
+<p>
 A password reset request was received.
+</p>
 
-Click the link below to reset your password:
 
-{reset_link}
+<p>
+Click below to reset your password:
+</p>
 
-This link will expire in 1 hour.
 
-If you did not request this,
-please ignore this email.
+<a href="{reset_link}"
+style="
+background:#dc3545;
+color:white;
+padding:12px 25px;
+text-decoration:none;
+border-radius:6px;
+">
 
-Regards,
-AI Resume Builder Team
+Reset Password
+
+</a>
+
+
+<br><br>
+
+
+<p>
+This link expires in 1 hour.
+</p>
+
+
+<p>
+If you did not request this, ignore this email.
+</p>
+
+
+</body>
+
+</html>
+
+
 """
+
 
     return send_email(
         recipient,
@@ -105,31 +216,62 @@ AI Resume Builder Team
         body
     )
 
+
+
+
+# ====================================
+# LOGIN OTP
+# ====================================
 
 def send_login_otp_email(
     recipient,
     otp
 ):
-    """
-    Login OTP Email
-    """
+
 
     subject = "Your Login OTP"
 
+
     body = f"""
-Hello,
 
-Your One-Time Password (OTP) is:
 
+<html>
+
+<body>
+
+
+<h2>
+Login OTP
+</h2>
+
+
+<p>
+Your OTP is:
+</p>
+
+
+<h1>
 {otp}
+</h1>
 
-This OTP is valid for 5 minutes.
 
-Do not share this OTP with anyone.
+<p>
+Valid for 5 minutes.
+</p>
 
-Regards,
-AI Resume Builder Team
+
+<p>
+Do not share this OTP.
+</p>
+
+
+</body>
+
+</html>
+
+
 """
+
 
     return send_email(
         recipient,
@@ -137,37 +279,77 @@ AI Resume Builder Team
         body
     )
 
+
+
+
+# ====================================
+# WELCOME EMAIL
+# ====================================
 
 def send_welcome_email(
     recipient,
     username
 ):
-    """
-    Welcome Email
-    """
+
 
     subject = "Welcome to AI Resume Builder"
 
+
     body = f"""
-Hello {username},
 
-Welcome to AI Resume Builder.
 
-Your account has been created successfully.
+<html>
 
-You can now:
+<body>
 
-- Build Professional Resumes
-- Generate AI Resume Summaries
-- Create Portfolio Websites
-- Export PDF Resumes
-- Check ATS Scores
 
-Thank you for joining us.
+<h2>
+Welcome {username} 🎉
+</h2>
 
-Regards,
+
+<p>
+Your account was created successfully.
+</p>
+
+
+<ul>
+
+<li>
+AI Resume Builder
+</li>
+
+<li>
+Portfolio Builder
+</li>
+
+<li>
+ATS Resume Checker
+</li>
+
+<li>
+PDF Export
+</li>
+
+</ul>
+
+
+<p>
+
+Regards,<br>
+
 AI Resume Builder Team
+
+</p>
+
+
+</body>
+
+</html>
+
+
 """
+
 
     return send_email(
         recipient,
@@ -175,26 +357,54 @@ AI Resume Builder Team
         body
     )
 
+
+
+
+# ====================================
+# ACCOUNT LOCK ALERT
+# ====================================
 
 def send_account_locked_email(
     recipient
 ):
-    """
-    Account Lock Alert
-    """
+
 
     subject = "Security Alert"
 
+
     body = """
-Hello,
 
-Your account has been temporarily locked due to multiple failed login attempts.
+<html>
 
-Please reset your password or contact support.
+<body>
 
-Regards,
-AI Resume Builder Security Team
+
+<h2>
+Account Locked
+</h2>
+
+
+<p>
+
+Your account has been locked because of multiple failed login attempts.
+
+</p>
+
+
+<p>
+
+Please reset your password.
+
+</p>
+
+
+</body>
+
+</html>
+
+
 """
+
 
     return send_email(
         recipient,
@@ -203,32 +413,57 @@ AI Resume Builder Security Team
     )
 
 
+
+
+# ====================================
+# SMTP TEST
+# ====================================
+
 def test_email_connection():
-    """
-    Test SMTP Configuration
-    """
+
 
     try:
 
+
         msg = Message(
+
             subject="SMTP Test",
+
+            sender=current_app.config["MAIL_USERNAME"],
+
             recipients=[
-                current_app.config[
-                    "MAIL_USERNAME"
-                ]
+                current_app.config["MAIL_USERNAME"]
             ]
+
         )
 
-        msg.body = "SMTP Test Successful"
+
+        msg.html = """
+
+<h2>
+SMTP Test Successful
+</h2>
+
+<p>
+Your Flask email system is working.
+</p>
+
+"""
+
 
         mail.send(msg)
 
+
         return True
 
+
+
     except Exception as e:
+
 
         print(
             f"SMTP Test Failed: {e}"
         )
+
 
         return False
