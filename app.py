@@ -81,7 +81,7 @@ def portfolio_builder():
         )
         db.session.add(portfolio)
         db.session.commit()
-
+    print("Loaded Portfolio ID:", portfolio.id if portfolio else None)
     return render_template("portfolio.html", portfolio=portfolio)
 
 
