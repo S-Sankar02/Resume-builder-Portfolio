@@ -1,0 +1,16 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment file
+.env
+
+# Virtual environment
+venv/
+
+# Export files (optional)
+static/export/
+
+# OS files
+.DS_Store
+Thumbs.db
