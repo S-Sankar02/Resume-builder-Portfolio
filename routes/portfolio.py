@@ -54,23 +54,6 @@ def public(pid):
 # =========================
 # EXPORT PDF
 # =========================
-# @portfolio_bp.route("/export/<int:pid>")
-# @login_required
-# def export(pid):
-#     file_path = ExportService.export_pdf(pid)
-#     return send_file(file_path, as_attachment=True)
-
-
-# @portfolio_bp.route("/export/<int:pid>")
-# @login_required
-# def export(pid):
-#     file_url = ExportService.export_pdf(pid)
-#     return jsonify({
-#         "success": True,
-#         "file": file_url
-#     })
-
-
 @portfolio_bp.route("/export/<int:pid>")
 @login_required
 def export_portfolio(pid):
