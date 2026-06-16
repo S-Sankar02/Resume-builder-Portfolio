@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from models.user import db
 from models import db
