@@ -7,4 +7,3 @@ ai_bp = Blueprint("ai", __name__)
 @login_required
 def ats_checker():
     return render_template("ats_checker.html")
-
