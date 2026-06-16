@@ -34,54 +34,6 @@ def get_resume(id):
 
 
 # ==========================
-# CREATE RESUME
-# ==========================
-# @resume_bp.route("/create", methods=["POST"])
-# @login_required
-# def create_resume():
-#     data = request.get_json() or {}
-
-#     title = data.get("title")
-#     if not title:
-#         return jsonify({"error": "Title is required"}), 400
-
-#     # resume = Resume(
-#     #     user_id=current_user.id,
-#     #     title=title,
-#     #     summary=data.get("summary", ""),
-#     #     template_id=data.get("template_id", "basic")
-#     # )
-#     resume = Resume(
-#     user_id=current_user.id,
-#     title=data.get("title", ""),
-#     summary=data.get("summary", ""),
-#     template_id=data.get("template_id", "basic"),
-
-#     full_name=data.get("full_name", ""),
-#     email=data.get("email", ""),
-#     phone=data.get("phone", ""),
-#     location=data.get("location", ""),
-#     linkedin=data.get("linkedin", ""),
-#     github=data.get("github", ""),
-
-#     skills=data.get("skills", ""),
-#     experience=data.get("experience", ""),
-#     education=data.get("education", ""),
-#     projects=data.get("projects", ""),
-#     certifications=data.get("certifications", ""),
-#     languages=data.get("languages", "")
-# )
-
-#     db.session.add(resume)
-#     db.session.commit()
-
-#     return jsonify({
-#         "id": resume.id,
-#         "message": "Resume created successfully"
-#     }), 201
-
-
-# ==========================
 # UPDATE RESUME
 # ==========================
 @resume_bp.route("/<int:id>", methods=["PUT"])
