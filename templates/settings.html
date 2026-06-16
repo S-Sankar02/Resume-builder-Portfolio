@@ -1,68 +1,224 @@
 {% extends "base.html" %}
-
+{% block title %}
+Settings - AI Resume Builder
+{% endblock %}
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
 
-    <div class="card shadow-sm">
-        <div class="card-header">
-            <h3>Settings</h3>
+    <div class="row">
+
+        <!-- Profile Card -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <img
+                        src="{{ current_user.profile_image if current_user.profile_image else '/static/images/default-user.png' }}"
+                        class="rounded-circle mb-3"
+                        width="120"
+                        height="120"
+                    >
+
+                    <h4>
+                        {{ current_user.name }}
+                    </h4>
+
+                    <p class="text-muted">
+                        {{ current_user.email }}
+                    </p>
+                    <form method="POST" enctype="multipart/form-data">
+
+                        <label class="btn btn-outline-primary btn-sm">
+
+                            Change Photo
+
+                            <input
+                                type="file"
+                                name="profile_image"
+                                hidden
+                            >
+
+                        </label>
+
+                    </form>
+                    <hr>
+                    <p>
+                        {% if current_user.email_verified %}
+
+                            <span class="badge bg-success">
+                                Verified Email
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-warning">
+                                Not Verified
+                            </span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
         </div>
+        <!-- Settings -->
 
-        <div class="card-body">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
 
-            <form method="POST">
-
-                <div class="mb-3">
-                    <label class="form-label">Full Name</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="name"
-                        value="{{ current_user.name if current_user.is_authenticated else '' }}"
-                    >
+                    <h3>
+                        Account Settings
+                    </h3>
                 </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <h5>
+                            Personal Information
+                        </h5>
+                        <div class="mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input
-                        type="email"
-                        class="form-control"
-                        value="{{ current_user.email if current_user.is_authenticated else '' }}"
-                        readonly
-                    >
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                class="form-control"
+                                name="name"
+                                value="{{ current_user.name }}"
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label>
+                                Email
+                            </label>
+                            <input
+                                class="form-control"
+                                value="{{ current_user.email }}"
+                                readonly
+                            >
+                       </div>
+                        <hr>
+                        <h5>
+                            Security
+                        </h5>
+                        <div class="mb-3">
+                            <label>
+                                New Password
+                           </label>
+                            <div class="input-group">
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control"
+                                    name="password"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="showPassword()"
+                                >
+                                    👁
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>
+                                Confirm Password
+                            </label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="confirm_password"
+                            >
+                        </div>
+                        <hr>
+                        <h5>
+                            Preferences
+                        </h5>
+
+                        <div class="form-check form-switch mb-3">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="notifications"
+                                checked
+                            >
+                            <label>
+                                Email Notifications
+                            </label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="dark_mode"
+                            >
+                            <label>
+                                Dark Mode
+                            </label>
+                        </div>
+                        <button class="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </form>
                 </div>
+            </div>
+            <br>
+            <!-- Danger Zone -->
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
 
-                <hr>
-
-                <h5>Change Password</h5>
-
-                <div class="mb-3">
-                    <label class="form-label">New Password</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        name="password"
-                    >
+                    <h5>
+                        Danger Zone
+                    </h5>
                 </div>
+                <div class="card-body">
 
-                <div class="mb-3">
-                    <label class="form-label">Confirm Password</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        name="confirm_password"
+                    <p>
+                        Deleting your account removes all resumes and portfolios permanently.
+                    </p>
+                    <button
+                        class="btn btn-danger"
+                        onclick="confirmDelete()"
                     >
+                        Delete Account
+                    </button>
                 </div>
-
-                <button type="submit" class="btn btn-primary">
-                    Save Changes
-                </button>
-
-            </form>
-
+            </div>
         </div>
     </div>
-
 </div>
-{% endblock %}
+<script>
+function showPassword() {
 
+    let p = document.getElementById("password");
+
+    if (p.type === "password") {
+
+        p.type = "text";
+
+    } else {
+
+        p.type = "password";
+
+    }
+
+}
+
+function confirmDelete() {
+
+    if (confirm("Are you sure you want to delete your account?")) {
+
+        window.location.href = "/delete-account";
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}
