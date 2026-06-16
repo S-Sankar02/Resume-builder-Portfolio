@@ -5,7 +5,6 @@ import traceback
 
 mail = Mail()
 
-
 def send_email(
     recipient,
     subject,
