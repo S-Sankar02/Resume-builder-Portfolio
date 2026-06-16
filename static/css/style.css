@@ -654,3 +654,14 @@ textarea {
 .timeline-item{
     margin-bottom:20px;
 }
+
+/* ATS Button Size Fix */
+
+#atsAnalyzeBtn {
+
+    width:220px !important;
+    padding:10px 20px;
+    display:block;
+    margin:auto;
+
+}
