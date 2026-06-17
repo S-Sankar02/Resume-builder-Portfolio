@@ -8,208 +8,248 @@ Dashboard - AI Resume Builder
 
 <div class="container-fluid">
 
-    <div class="row">
+```
+<div class="row">
 
-        <!-- Sidebar -->
+    <!-- Sidebar -->
+    <div class="col-lg-2 col-md-3 bg-dark text-white min-vh-100 p-0">
 
-        <div class="col-lg-2 col-md-3 bg-dark text-white min-vh-100 p-0">
+        <div class="p-4">
 
-            <div class="p-4">
+            <h4 class="fw-bold">
+                AI Resume Builder
+            </h4>
 
-                <h4 class="fw-bold">
-                    AI Resume Builder
-                </h4>
+            <hr>
 
-                <hr>
+            <ul class="nav flex-column">
 
-                <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a href="/dashboard" class="nav-link text-white">
+                        <i class="bi bi-speedometer2"></i>
+                        Dashboard
+                    </a>
+                </li>
 
-                    <li class="nav-item mb-2">
+                <li class="nav-item mb-2">
+                    <a href="/resume-builder" class="nav-link text-white">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Resume Builder
+                    </a>
+                </li>
 
-                        <a href="/dashboard"
-                           class="nav-link text-white">
+                <li class="nav-item mb-2">
+                    <a href="/portfolio-builder" class="nav-link text-white">
+                        <i class="bi bi-globe"></i>
+                        Portfolio Builder
+                    </a>
+                </li>
 
-                            <i class="bi bi-speedometer2"></i>
-                            Dashboard
+                <li class="nav-item mb-2">
+                    <a href="/ats-checker" class="nav-link text-white">
+                        <i class="bi bi-search"></i>
+                        ATS Checker
+                    </a>
+                </li>
 
-                        </a>
+                <li class="nav-item mb-2">
+                    <a href="/settings" class="nav-link text-white">
+                        <i class="bi bi-gear"></i>
+                        Settings
+                    </a>
+                </li>
 
-                    </li>
+                <li class="nav-item mt-4">
+                    <a href="/logout" class="btn btn-danger w-100">
+                        Logout
+                    </a>
+                </li>
 
-                    <li class="nav-item mb-2">
-
-                        <a href="/resume-builder"
-                           class="nav-link text-white">
-
-                            <i class="bi bi-file-earmark-text"></i>
-                            Resume Builder
-
-                        </a>
-
-                    </li>
-
-                    <li class="nav-item mb-2">
-
-                        <a href="/portfolio-builder"
-                           class="nav-link text-white">
-
-                            <i class="bi bi-globe"></i>
-                            Portfolio Builder
-
-                        </a>
-
-                    </li>
-
-                    <li class="nav-item mb-2">
-
-                        <a href="/ats-checker"
-                           class="nav-link text-white">
-
-                            <i class="bi bi-search"></i>
-                            ATS Checker
-
-                        </a>
-
-                    </li>
-
-                    <li class="nav-item mb-2">
-
-                        <a href="/settings"
-                           class="nav-link text-white">
-
-                            <i class="bi bi-gear"></i>
-                            Settings
-
-                        </a>
-
-                    </li>
-
-                    <li class="nav-item mt-4">
-
-                        <a href="/logout"
-                           class="btn btn-danger w-100">
-
-                            Logout
-
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </div>
+            </ul>
 
         </div>
 
-        <!-- Main Content -->
+    </div>
 
-        <div class="col-lg-10 col-md-9">
+    <!-- Main Content -->
+    <div class="col-lg-10 col-md-9">
 
-            <!-- Header -->
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center p-4">
 
-            <div class="d-flex justify-content-between align-items-center p-4">
+            <div>
+                <h2 class="fw-bold">
+                    Welcome, {{ user.name }}
+                </h2>
 
-                <div>
+                <p class="text-muted">
+                    Manage your resumes and portfolio
+                </p>
+            </div>
 
-                    <h2 class="fw-bold">
-                        Welcome,
-                        {{ user.name }}
-                    </h2>
+            <button
+                class="btn btn-outline-dark"
+                onclick="toggleTheme()">
 
-                    <p class="text-muted">
-                        Manage your resumes and portfolio
-                    </p>
+                <i class="bi bi-moon"></i>
+                Dark Mode
+
+            </button>
+
+        </div>
+
+        <div class="container">
+
+            <!-- Welcome Banner -->
+            <div class="alert alert-primary shadow-sm mb-4">
+
+                <h4>
+                    Welcome Back 👋
+                </h4>
+
+                <p class="mb-0">
+
+                    You currently have
+
+                    <strong>
+                        {{ resume_count }}
+                    </strong>
+
+                    resumes and
+
+                    <strong>
+                        {{ portfolio_count }}
+                    </strong>
+
+                    portfolios.
+
+                </p>
+
+            </div>
+
+            <!-- Statistics -->
+            <div class="row">
+
+                <div class="col-md-3 mb-4">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-file-earmark-text text-primary fs-1"></i>
+
+                            <h2 class="mt-2">
+                                {{ resume_count }}
+                            </h2>
+
+                            <p class="text-muted">
+                                Resumes
+                            </p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-                <div>
+                <div class="col-md-3 mb-4">
 
-                    <button
-                        class="btn btn-outline-dark"
-                        onclick="toggleTheme()">
+                    <div class="card shadow border-0 h-100">
 
-                        <i class="bi bi-moon"></i>
-                        Dark Mode
+                        <div class="card-body text-center">
 
-                    </button>
+                            <i class="bi bi-globe text-success fs-1"></i>
+
+                            <h2 class="mt-2">
+                                {{ portfolio_count }}
+                            </h2>
+
+                            <p class="text-muted">
+                                Portfolios
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 mb-4">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-clock-history text-warning fs-1"></i>
+
+                            <h2 class="mt-2">
+                                {{ login_count }}
+                            </h2>
+
+                            <p class="text-muted">
+                                Total Logins
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 mb-4">
+
+                    <div class="card shadow border-0 h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-person-check text-info fs-1"></i>
+
+                            {% if user.is_verified %}
+                                <h5 class="text-success mt-2">
+                                    Verified
+                                </h5>
+                            {% else %}
+                                <h5 class="text-danger mt-2">
+                                    Not Verified
+                                </h5>
+                            {% endif %}
+
+                            <p class="text-muted">
+                                Account Status
+                            </p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <!-- Stats -->
+            <!-- Quick Actions -->
+            <div class="row">
 
-            <div class="container">
+                <div class="col-lg-4 mb-4">
 
-                <div class="row">
+                    <div class="card shadow h-100">
 
-                    <div class="col-md-3 mb-4">
+                        <div class="card-body">
 
-                        <div class="card shadow border-0">
+                            <h4>
+                                Resume Builder
+                            </h4>
 
-                            <div class="card-body text-center">
+                            <p>
+                                Create professional resumes using AI.
+                            </p>
 
-                               <h3>{{ resume_count }}</h3>
+                            <a
+                                href="/resume-builder"
+                                class="btn btn-primary">
 
-                                <p class="text-muted">
-                                    Resumes
-                                </p>
+                                Create Resume
 
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-
-                        <div class="card shadow border-0">
-
-                            <div class="card-body text-center">
-
-                             <h3>{{ portfolio_count }}</h3>
-
-                                <p class="text-muted">
-                                    Portfolios
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-
-                        <div class="card shadow border-0">
-
-                            <div class="card-body text-center">
-
-                                <h3>0</h3>
-
-                                <p class="text-muted">
-                                    Downloads
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-
-                        <div class="card shadow border-0">
-
-                            <div class="card-body text-center">
-
-                               <h3>{{ login_count }}</h3>
-
-                                <p class="text-muted">
-                                    ATS Checks
-                                </p>
-
-                            </div>
+                            </a>
 
                         </div>
 
@@ -217,89 +257,144 @@ Dashboard - AI Resume Builder
 
                 </div>
 
-                <!-- Quick Actions -->
+                <div class="col-lg-4 mb-4">
 
-                <div class="row">
+                    <div class="card shadow h-100">
 
-                    <div class="col-lg-4 mb-4">
+                        <div class="card-body">
 
-                        <div class="card shadow h-100">
+                            <h4>
+                                Portfolio Builder
+                            </h4>
 
-                            <div class="card-body">
+                            <p>
+                                Build a modern online portfolio.
+                            </p>
 
-                                <h4>
-                                    Resume Builder
-                                </h4>
+                            <a
+                                href="/portfolio-builder"
+                                class="btn btn-success">
 
-                                <p>
-                                    Create professional resumes using AI.
-                                </p>
+                                Create Portfolio
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 mb-4">
+
+                    <div class="card shadow h-100">
+
+                        <div class="card-body">
+
+                            <h4>
+                                ATS Checker
+                            </h4>
+
+                            <p>
+                                Analyze resume ATS score instantly.
+                            </p>
+
+                            <a
+                                href="/ats-checker"
+                                class="btn btn-warning">
+
+                                Check Resume
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Profile Card -->
+            <div class="card shadow border-0 mb-4">
+
+                <div class="card-header bg-primary text-white">
+                    User Profile
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-md-3 text-center">
+
+                            {% if user.profile_image %}
+
+                                <img
+                                    src="{{ user.profile_image }}"
+                                    class="rounded-circle shadow border"
+                                    width="180"
+                                    height="180"
+                                    style="object-fit:cover;"
+                                    alt="Profile Image">
+
+                            {% else %}
+
+                                <img
+                                    src="https://ui-avatars.com/api/?name={{ user.name }}&background=0D6EFD&color=fff&size=180"
+                                    class="rounded-circle shadow border"
+                                    width="180"
+                                    height="180"
+                                    alt="Default Avatar">
+
+                            {% endif %}
+
+                            <div class="mt-3">
 
                                 <a
-                                    href="/resume-builder"
+                                    href="/settings"
                                     class="btn btn-primary">
 
-                                    Create Resume
+                                    <i class="bi bi-camera"></i>
+                                    Change Image
 
                                 </a>
 
                             </div>
 
                         </div>
+                        <div class="col-md-9">
 
-                    </div>
+                            <h3>{{ user.name }}</h3>
 
-                    <div class="col-lg-4 mb-4">
+                            <p>
+                                <strong>Email:</strong>
+                                {{ user.email }}
+                            </p>
 
-                        <div class="card shadow h-100">
+                            <p>
+                                <strong>Verified:</strong>
 
-                            <div class="card-body">
+                                {% if user.is_verified %}
+                                    <span class="badge bg-success">
+                                        Verified
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger">
+                                        Not Verified
+                                    </span>
+                                {% endif %}
+                            </p>
 
-                                <h4>
-                                    Portfolio Builder
-                                </h4>
+                            <p>
+                                <strong>Last Login:</strong>
 
-                                <p>
-                                    Build a modern online portfolio.
-                                </p>
-
-                                <a
-                                    href="/portfolio-builder"
-                                    class="btn btn-success">
-
-                                    Create Portfolio
-
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-4 mb-4">
-
-                        <div class="card shadow h-100">
-
-                            <div class="card-body">
-
-                                <h4>
-                                    ATS Checker
-                                </h4>
-
-                                <p>
-                                    Analyze resume ATS score instantly.
-                                </p>
-
-                                <a
-                                    href="/ats-checker"
-                                    class="btn btn-warning">
-
-                                    Check Resume
-
-                                </a>
-
-                            </div>
+                                {% if user.last_login %}
+                                    {{ user.last_login }}
+                                {% else %}
+                                    Never
+                                {% endif %}
+                            </p>
 
                         </div>
 
@@ -307,85 +402,47 @@ Dashboard - AI Resume Builder
 
                 </div>
 
-                <!-- Profile -->
+            </div>
 
-                <div class="card shadow border-0 mb-5">
+            <!-- Recent Activity -->
+            <div class="card shadow border-0 mb-5">
 
-                    <div class="card-header bg-primary text-white">
-
-                        User Profile
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <div class="row">
-
-                            <div class="col-md-6">
-
-                                <p>
-
-                                    <strong>Name:</strong>
-
-                                    {{ user.name }}
-
-                                </p>
-
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <p>
-
-                                    <strong>Email:</strong>
-
-                                    {{ user.email }}
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                <div class="card-header">
+                    Recent Login Activity
                 </div>
 
-                <!-- Recent Activity -->
+                <div class="card-body">
 
-                <div class="card shadow border-0 mb-5">
-
-                    <div class="card-header">
-
-                        Recent Activity
-
-                    </div>
-
-                    <div class="card-body">
+                    {% if recent_activity %}
 
                         <ul class="list-group">
 
-                            <li class="list-group-item">
-
-                                Account Created
-
-                            </li>
+                            {% for activity in recent_activity %}
 
                             <li class="list-group-item">
 
-                                Email Verified
+                                <strong>IP:</strong>
+                                {{ activity.ip_address }}
+
+                                <br>
+
+                                <small class="text-muted">
+                                    {{ activity.login_time }}
+                                </small>
 
                             </li>
 
-                            <li class="list-group-item">
-
-                                Logged In Successfully
-
-                            </li>
+                            {% endfor %}
 
                         </ul>
 
-                    </div>
+                    {% else %}
+
+                        <p class="text-muted">
+                            No activity found.
+                        </p>
+
+                    {% endif %}
 
                 </div>
 
@@ -396,6 +453,26 @@ Dashboard - AI Resume Builder
     </div>
 
 </div>
+```
+
+</div>
+
+<style>
+
+.card{
+    border-radius:15px;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.rounded-circle{
+    object-fit:cover;
+}
+
+</style>
 
 {% endblock %}
 
@@ -405,13 +482,8 @@ Dashboard - AI Resume Builder
 
 function toggleTheme(){
 
-    document.body.classList.toggle(
-        "bg-dark"
-    );
-
-    document.body.classList.toggle(
-        "text-white"
-    );
+    document.body.classList.toggle("bg-dark");
+    document.body.classList.toggle("text-white");
 
 }
 

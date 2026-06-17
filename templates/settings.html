@@ -1,580 +1,249 @@
-{% extends "base.html" %}
-
-{% block title %}
-Settings - AI Resume Builder
-{% endblock %}
-
-
-{% block content %}
+{% extends "base.html" %} {% block title %} Settings - AI Resume Builder {%
+endblock %} {% block content %}
 
 <div class="container mt-5">
+  <div class="row">
+    <!-- PROFILE CARD -->
 
+    <div class="col-md-4">
+      <div class="card shadow border-0">
+        <div class="card-body text-center">
+          <img
+            id="profilePreview"
+            src="{% if current_user.profile_image %}
+            {{ current_user.profile_image }}
+            {% else %}
+            https://ui-avatars.com/api/?name={{ current_user.name }}&background=0D6EFD&color=fff&size=150
+            {% endif %}"
+            class="rounded-circle shadow border mb-3"
+            width="150"
+            height="150"
+            style="object-fit: cover"
+          />
 
-<div class="row">
+          <h4>{{ current_user.name }}</h4>
 
+          <p class="text-muted">{{ current_user.email }}</p>
 
-<!-- PROFILE CARD -->
+          <!-- PROFILE IMAGE UPLOAD -->
 
-<div class="col-md-4">
+          <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="name" value="{{ current_user.name }}" />
 
+            <label class="btn btn-outline-primary">
+              <i class="bi bi-camera"></i>
 
-<div class="card shadow border-0">
+              Change Photo
 
+              <input
+                type="file"
+                name="profile_image"
+                id="profileImageInput"
+                hidden
+                accept="image/*"
+                onchange="previewImage(event)"
+              />
+            </label>
 
-<div class="card-body text-center">
+            <p class="small text-muted mt-2">JPG, PNG, JPEG supported</p>
 
+            <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+          </form>
 
-<img
-id="profilePreview"
-src="{{ url_for('static', filename=current_user.profile_image.replace('/static/', '') ) if current_user.profile_image else url_for('static', filename='images/default-user.png') }}"
-class="rounded-circle mb-3"
-width="120"
-height="120"
->
+          <hr />
 
+          <p>
+            {% if current_user.is_verified %}
 
-<h4>
-{{ current_user.name }}
-</h4>
+            <span class="badge bg-success"> Verified Email </span>
 
+            {% else %}
 
-<p class="text-muted">
-{{ current_user.email }}
-</p>
+            <span class="badge bg-warning"> Not Verified </span>
 
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
 
+    <!-- SETTINGS -->
 
-<!-- PROFILE IMAGE UPLOAD -->
+    <div class="col-md-8">
+      <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white">
+          <h3>Account Settings</h3>
+        </div>
 
-<form method="POST" enctype="multipart/form-data">
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            <h5>Personal Information</h5>
 
+            <div class="mb-3">
+              <label> Full Name </label>
 
-<input
-type="hidden"
-name="name"
-value="{{ current_user.name }}"
->
+              <input
+                class="form-control"
+                name="name"
+                value="{{ current_user.name }}"
+              />
+            </div>
 
+            <div class="mb-3">
+              <label> Email </label>
 
-<label class="btn btn-outline-primary btn-sm">
+              <input
+                class="form-control"
+                value="{{ current_user.email }}"
+                readonly
+              />
+            </div>
 
+            <hr />
 
-Change Photo
+            <h5>Security</h5>
 
+            <div class="mb-3">
+              <label> New Password </label>
 
-<input
-type="file"
-name="profile_image"
-id="profileImageInput"
-hidden
-onchange="previewImage(event)"
->
+              <div class="input-group">
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  name="password"
+                />
 
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  onclick="showPassword()"
+                >
+                  👁
+                </button>
+              </div>
+            </div>
 
-</label>
+            <div class="mb-3">
+              <label> Confirm Password </label>
 
+              <input
+                type="password"
+                class="form-control"
+                name="confirm_password"
+              />
+            </div>
 
+            <hr />
 
-<button
-type="submit"
-class="btn btn-primary btn-sm">
+            <h5>Preferences</h5>
 
-Upload
+            <div class="form-check form-switch mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="notifications"
+                checked
+              />
 
-</button>
+              <label> Email Notifications </label>
+            </div>
 
+            <div class="form-check form-switch mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="dark_mode"
+              />
 
-</form>
+              <label> Dark Mode </label>
+            </div>
 
+            <button class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
 
-<hr>
+      <br />
 
+      <!-- DANGER ZONE -->
 
-<p>
+      <div class="card shadow border-danger">
+        <div class="card-header bg-danger text-white">
+          <h5>Danger Zone</h5>
+        </div>
 
-{% if current_user.email_verified %}
+        <div class="card-body">
+          <p>
+            Deleting your account removes all resumes and portfolios
+            permanently.
+          </p>
 
-
-<span class="badge bg-success">
-Verified Email
-</span>
-
-
-{% else %}
-
-
-<span class="badge bg-warning">
-Not Verified
-</span>
-
-
-{% endif %}
-
-
-</p>
-
-
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+          >
+            Delete Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- SETTINGS -->
-
-
-<div class="col-md-8">
-
-
-
-<div class="card shadow border-0">
-
-
-<div class="card-header bg-primary text-white">
-
-
-<h3>
-Account Settings
-</h3>
-
-
-</div>
-
-
-
-
-<div class="card-body">
-
-
-
-<form method="POST">
-
-
-
-<h5>
-Personal Information
-</h5>
-
-
-
-<div class="mb-3">
-
-
-<label>
-Full Name
-</label>
-
-
-<input
-class="form-control"
-name="name"
-value="{{ current_user.name }}"
->
-
-
-</div>
-
-
-
-
-
-<div class="mb-3">
-
-
-<label>
-Email
-</label>
-
-
-<input
-class="form-control"
-value="{{ current_user.email }}"
-readonly
->
-
-
-</div>
-
-
-
-
-<hr>
-
-
-<h5>
-Security
-</h5>
-
-
-
-
-<div class="mb-3">
-
-
-<label>
-New Password
-</label>
-
-
-
-<div class="input-group">
-
-
-<input
-id="password"
-type="password"
-class="form-control"
-name="password"
->
-
-
-
-<button
-type="button"
-class="btn btn-outline-secondary"
-onclick="showPassword()">
-
-👁
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="mb-3">
-
-
-<label>
-Confirm Password
-</label>
-
-
-<input
-type="password"
-class="form-control"
-name="confirm_password"
->
-
-
-</div>
-
-
-
-
-
-<hr>
-
-
-
-<h5>
-Preferences
-</h5>
-
-
-
-
-<div class="form-check form-switch mb-3">
-
-
-<input
-class="form-check-input"
-type="checkbox"
-name="notifications"
-checked
->
-
-
-<label>
-Email Notifications
-</label>
-
-
-</div>
-
-
-
-
-
-<div class="form-check form-switch mb-3">
-
-
-<input
-class="form-check-input"
-type="checkbox"
-name="dark_mode"
->
-
-
-<label>
-Dark Mode
-</label>
-
-
-</div>
-
-
-
-
-<button
-class="btn btn-primary">
-
-Save Changes
-
-</button>
-
-
-
-</form>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<br>
-
-
-
-
-<!-- DANGER ZONE -->
-
-
-<div class="card shadow border-danger">
-
-
-
-<div class="card-header bg-danger text-white">
-
-
-<h5>
-Danger Zone
-</h5>
-
-
-</div>
-
-
-
-
-<div class="card-body">
-
-
-<p>
-
-Deleting your account removes all resumes and portfolios permanently.
-
-</p>
-
-
-
-
-<button
-class="btn btn-danger"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-Delete Account
-
-</button>
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
 
 <!-- DELETE MODAL -->
 
-
 <div class="modal fade" id="deleteModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Delete Account</h5>
 
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
 
-<div class="modal-dialog modal-dialog-centered">
+      <div class="modal-body">
+        Are you sure you want to delete your account?
 
+        <br />
 
-<div class="modal-content">
+        All resumes and portfolios will be permanently deleted.
+      </div>
 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
 
-
-<div class="modal-header bg-danger text-white">
-
-
-<h5 class="modal-title">
-
-Delete Account
-
-</h5>
-
-
-
-<button
-type="button"
-class="btn-close btn-close-white"
-data-bs-dismiss="modal">
-
-</button>
-
-
+        <a href="/delete-account" class="btn btn-danger"> Delete </a>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-
-
-<div class="modal-body">
-
-
-Are you sure you want to delete your account?
-
-
-<br>
-
-
-All resumes and portfolios will be permanently deleted.
-
-
-</div>
-
-
-
-
-
-<div class="modal-footer">
-
-
-
-<button
-type="button"
-class="btn btn-secondary"
-data-bs-dismiss="modal">
-
-Cancel
-
-</button>
-
-
-
-
-
-<a
-href="/delete-account"
-class="btn btn-danger">
-
-Delete
-
-</a>
-
-
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
 
 <script>
+  function showPassword() {
+    let p = document.getElementById("password");
 
+    if (p.type === "password") {
+      p.type = "text";
+    } else {
+      p.type = "password";
+    }
+  }
 
-function showPassword(){
+  function previewImage(event) {
+    const preview = document.getElementById("profilePreview");
 
-
-let p=document.getElementById("password");
-
-
-if(p.type==="password"){
-
-p.type="text";
-
-}
-
-else{
-
-p.type="password";
-
-}
-
-
-}
-
-
-
-
-function previewImage(event){
-
-
-let image=document.getElementById("profilePreview");
-
-
-if(event.target.files[0]){
-
-
-image.src=URL.createObjectURL(
-event.target.files[0]
-);
-
-
-}
-
-
-}
-
-
+    if (event.target.files.length > 0) {
+      preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+  }
 </script>
-
-
-
 
 {% endblock %}

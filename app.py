@@ -14,6 +14,8 @@ from config import Config
 
 from models.user import db, User
 from models.portfolio import Portfolio
+from models.resume import Resume
+from models.login_history import LoginHistory
 
 from services.email_service import mail
 
@@ -23,8 +25,10 @@ from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
 
-from models.resume import Resume
-from models.login_history import LoginHistory
+
+
+
+
 # =========================
 # APP INIT
 # =========================
@@ -64,7 +68,6 @@ def home():
         return redirect(url_for("dashboard"))
     return redirect(url_for("auth.login"))
 
-
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -81,14 +84,20 @@ def dashboard():
         user_id=current_user.id
     ).count()
 
+    recent_activity = LoginHistory.query.filter_by(
+        user_id=current_user.id
+    ).order_by(
+        LoginHistory.login_time.desc()
+    ).limit(5).all()
+
     return render_template(
         "dashboard.html",
         user=current_user,
         resume_count=resume_count,
         portfolio_count=portfolio_count,
-        login_count=login_count
+        login_count=login_count,
+        recent_activity=recent_activity
     )
-
 @app.route("/portfolio-builder")
 @login_required
 def portfolio_builder():
