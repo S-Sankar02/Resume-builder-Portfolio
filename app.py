@@ -22,6 +22,9 @@ from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
+
+from models.resume import Resume
+from models.login_history import LoginHistory
 # =========================
 # APP INIT
 # =========================
@@ -65,8 +68,26 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html", user=current_user)
 
+    resume_count = Resume.query.filter_by(
+        user_id=current_user.id
+    ).count()
+
+    portfolio_count = Portfolio.query.filter_by(
+        user_id=current_user.id
+    ).count()
+
+    login_count = LoginHistory.query.filter_by(
+        user_id=current_user.id
+    ).count()
+
+    return render_template(
+        "dashboard.html",
+        user=current_user,
+        resume_count=resume_count,
+        portfolio_count=portfolio_count,
+        login_count=login_count
+    )
 
 @app.route("/portfolio-builder")
 @login_required
