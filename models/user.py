@@ -175,3 +175,26 @@ def to_dict(self):
             f"<User {self.id} "
             f"{self.email}>"
         )
+# =========================
+# Dashboard Relationships
+# =========================
+
+resumes = db.relationship(
+    "Resume",
+    backref="user",
+    lazy=True
+)
+
+
+portfolios = db.relationship(
+    "Portfolio",
+    backref="user",
+    lazy=True
+)
+
+
+ats_results = db.relationship(
+    "ATSResult",
+    backref="user",
+    lazy=True
+)
