@@ -1,5 +1,7 @@
 import json
+
 from services.ai.ai_router import AIRouter
+
 
 class ATSService:
 
@@ -7,34 +9,59 @@ class ATSService:
     def calculate(provider, resume_text, job_description):
 
         prompt = f"""
-        You are an ATS scoring system.
 
-        Return ONLY valid JSON:
+You are an ATS Resume Analyzer.
 
-        {{
-          "score": 0-100,
-          "matched_keywords": [],
-          "missing_keywords": [],
-          "suggestions": []
-        }}
+Compare resume with job description.
 
-        RESUME:
-        {resume_text}
+Give ATS score from 0 to 100.
 
-        JOB DESCRIPTION:
-        {job_description}
-        """
+Return ONLY valid JSON.
+
+Format:
+
+{{
+ "score":0,
+ "matched_keywords":[],
+ "missing_keywords":[],
+ "analysis":"",
+ "suggestions":[]
+}}
+
+
+
+RESUME:
+
+{resume_text}
+
+
+
+JOB DESCRIPTION:
+
+{job_description}
+
+"""
 
         response = AIRouter._route(provider, prompt)
 
         try:
+
             return json.loads(response)
-        except:
-            return {
-                "score": 0,
-                "matched_keywords": [],
-                "missing_keywords": [],
-                "suggestions": [response]
-            }
-    
-    
+
+        except Exception:
+
+            try:
+
+                cleaned = response.replace("```json", "").replace("```", "").strip()
+
+                return json.loads(cleaned)
+
+            except:
+
+                return {
+                    "score": 0,
+                    "matched_keywords": [],
+                    "missing_keywords": [],
+                    "analysis": response,
+                    "suggestions": [],
+                }
