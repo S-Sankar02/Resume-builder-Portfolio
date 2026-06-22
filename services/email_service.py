@@ -54,7 +54,7 @@ def send_email(
 # VERIFY EMAIL
 # ====================================
 
-def send_email(
+def send_verification_email (
     recipient,
     subject,
     body
