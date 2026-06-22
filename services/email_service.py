@@ -1,12 +1,13 @@
 from flask_mail import Mail, Message
 from flask import current_app
 import traceback
+import threading
 
 mail = Mail()
 
 
 # ====================================
-# CORE EMAIL SENDER (CLEAN + SAFE)
+# CORE EMAIL SENDER (NON-BLOCKING SAFE)
 # ====================================
 
 def send_email(recipient, subject, body):
@@ -18,13 +19,19 @@ def send_email(recipient, subject, body):
             html=body
         )
 
-        mail.send(msg)
+        # 🔥 Send in background to avoid Render timeout
+        def _send():
+            try:
+                mail.send(msg)
+                print("EMAIL SENT SUCCESS")
+            except Exception as e:
+                print("EMAIL SEND FAILED:", str(e))
 
-        print("EMAIL SENT SUCCESS")
+        threading.Thread(target=_send).start()
 
         return {
             "success": True,
-            "message": "Email sent successfully"
+            "message": "Email queued successfully"
         }
 
     except Exception as e:
@@ -63,7 +70,7 @@ def send_reset_password_email(recipient, reset_link):
 
     body = f"""
     <h2>Password Reset</h2>
-    <p>Click below to reset:</p>
+    <p>Click below:</p>
     <a href="{reset_link}">Reset Password</a>
     """
 
@@ -80,6 +87,22 @@ def send_welcome_email(recipient, username):
     body = f"""
     <h2>Welcome {username}</h2>
     <p>Your account is ready.</p>
+    """
+
+    return send_email(recipient, subject, body)
+
+
+# ====================================
+# ACCOUNT LOCK EMAIL (IMPORTANT FIX)
+# ====================================
+
+def send_account_locked_email(recipient):
+    subject = "Account Locked"
+
+    body = """
+    <h2>Security Alert</h2>
+    <p>Your account has been locked due to multiple failed login attempts.</p>
+    <p>Please reset your password.</p>
     """
 
     return send_email(recipient, subject, body)
