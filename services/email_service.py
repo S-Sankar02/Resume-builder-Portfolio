@@ -9,7 +9,7 @@ from flask import current_app
 import traceback
 
 
-def send_email(recipient, subject, body):
+def send_email(recipient, subject, html):
 
     try:
 
@@ -17,7 +17,7 @@ def send_email(recipient, subject, body):
             from_email=current_app.config["MAIL_DEFAULT_SENDER"],
             to_emails=recipient,
             subject=subject,
-            html_content=body
+            html_content=html
         )
 
         sg = SendGridAPIClient(
@@ -26,15 +26,16 @@ def send_email(recipient, subject, body):
 
         response = sg.send(message)
 
-        print("EMAIL SENT:", response.status_code)
+        print(
+            "SENDGRID STATUS:",
+            response.status_code
+        )
 
         return {"success": True}
 
     except Exception as e:
 
-        print("EMAIL FAILED")
-        print(str(e))
-        traceback.print_exc()
+        print("EMAIL ERROR:", str(e))
 
         return {
             "success": False,
