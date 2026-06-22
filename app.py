@@ -20,6 +20,7 @@ from services.email_service import test_email_connection
 from flask_mail import Message
 
 import traceback
+import socket
 # =========================
 # APP INIT
 # =========================
@@ -399,6 +400,25 @@ def test_email_connection():
         traceback.print_exc()
 
         return False
+    
+
+
+
+@app.route("/smtp-test")
+def smtp_test():
+
+    try:
+
+        socket.create_connection(
+            ("smtp.gmail.com", 587),
+            timeout=10
+        )
+
+        return "SMTP Reachable"
+
+    except Exception as e:
+
+        return f"ERROR: {str(e)}"
 # =========================
 # RUN
 # =========================
