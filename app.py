@@ -16,11 +16,8 @@ from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
-from services.email_service import test_email_connection
-from flask_mail import Message
 
-import traceback
-import socket
+
 # =========================
 # APP INIT
 # =========================
@@ -350,40 +347,6 @@ def server_error(e):
 def favicon():
     return "", 204
 
-@app.route("/debug-mail")
-def debug_mail():
-
-    return {
-        "MAIL_SERVER": app.config.get("MAIL_SERVER"),
-        "MAIL_PORT": app.config.get("MAIL_PORT"),
-        "MAIL_USE_TLS": app.config.get("MAIL_USE_TLS"),
-        "MAIL_USERNAME": app.config.get("MAIL_USERNAME")
-    }
-@app.route("/test-email")
-def test_email_connection():
-    try:
-        msg = Message(
-            subject="SMTP Test Email",
-            sender=current_app.config["MAIL_USERNAME"],
-            recipients=[current_app.config["MAIL_USERNAME"]],
-            body="Email system working"
-        )
-
-        mail.send(msg)
-
-        return jsonify({
-            "success": True,
-            "message": "Email sent successfully"
-        })
-
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
 # =========================
 # RUN
 # =========================

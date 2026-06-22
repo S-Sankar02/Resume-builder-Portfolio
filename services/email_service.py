@@ -4,10 +4,10 @@ import traceback
 
 mail = Mail()
 
-
-# =========================
+# ====================================
 # CORE EMAIL SENDER
-# =========================
+# ====================================
+
 def send_email(recipient, subject, body):
     try:
         msg = Message(
@@ -18,42 +18,39 @@ def send_email(recipient, subject, body):
         )
 
         mail.send(msg)
-        return True
+
+        return {"success": True, "message": "Email sent successfully"}
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
         traceback.print_exc()
-        return False
+
+        return {"success": False, "error": str(e)}
 
 
-# =========================
-# VERIFY EMAIL (FIX FOR auth.py)
-# =========================
-def send_verification_email(recipient, link):
+# ====================================
+# EMAIL HELPERS
+# ====================================
+
+def send_verification_email(recipient, verification_link):
     return send_email(
         recipient,
         "Verify Email",
-        f"<h2>Verify Email</h2><a href='{link}'>Click here</a>"
+        f'<a href="{verification_link}">Verify Email</a>'
     )
 
 
-# =========================
-# RESET PASSWORD
-# =========================
-def send_reset_password_email(recipient, link):
+def send_reset_password_email(recipient, reset_link):
     return send_email(
         recipient,
         "Reset Password",
-        f"<h2>Reset Password</h2><a href='{link}'>Reset</a>"
+        f'<a href="{reset_link}">Reset Password</a>'
     )
 
 
-# =========================
-# ACCOUNT LOCK EMAIL
-# =========================
 def send_account_locked_email(recipient):
     return send_email(
         recipient,
         "Account Locked",
-        "<h2>Your account is locked due to failed attempts</h2>"
+        "<h3>Your account is locked due to failed attempts.</h3>"
     )
