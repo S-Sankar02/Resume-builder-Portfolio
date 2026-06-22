@@ -403,18 +403,17 @@ def test_email_connection():
     
 
 
-
 @app.route("/smtp-test")
 def smtp_test():
 
     try:
 
         socket.create_connection(
-            ("smtp.gmail.com", 587),
+            ("smtp-relay.brevo.com", 587),
             timeout=10
         )
 
-        return "SMTP Reachable"
+        return "Brevo SMTP Reachable"
 
     except Exception as e:
 
