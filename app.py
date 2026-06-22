@@ -346,6 +346,15 @@ def server_error(e):
 def favicon():
     return "", 204
 
+@app.route("/debug-mail")
+def debug_mail():
+
+    return {
+        "MAIL_SERVER": app.config.get("MAIL_SERVER"),
+        "MAIL_PORT": app.config.get("MAIL_PORT"),
+        "MAIL_USE_TLS": app.config.get("MAIL_USE_TLS"),
+        "MAIL_USERNAME": app.config.get("MAIL_USERNAME")
+    }
 
 # =========================
 # RUN
