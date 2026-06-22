@@ -1,33 +1,21 @@
 import os
 import PyPDF2
 import docx
-
 from werkzeug.utils import secure_filename
-
 from flask import Flask, render_template, redirect, url_for, request, jsonify, flash
-
 from flask_login import LoginManager, login_required, current_user
-
 from flask_bcrypt import Bcrypt
-
 from config import Config
-
 from models.user import db, User
 from models.portfolio import Portfolio
 from models.resume import Resume
 from models.login_history import LoginHistory
-
 from services.email_service import mail
-
 from routes.auth import auth
 from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
-
-
-
-
 
 # =========================
 # APP INIT
@@ -38,6 +26,9 @@ bcrypt = Bcrypt(app)
 
 db.init_app(app)
 mail.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -360,10 +351,6 @@ def favicon():
 # RUN
 # =========================
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        print("Database Connected Successfully")
-
     app.run(host="0.0.0.0", port=5000, debug=True)
 
     
