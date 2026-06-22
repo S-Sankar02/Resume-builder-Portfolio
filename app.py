@@ -356,6 +356,15 @@ def debug_mail():
         "MAIL_USERNAME": app.config.get("MAIL_USERNAME")
     }
 
+@app.route("/test-email")
+def test_email():
+
+    from services.email_service import test_email_connection
+
+    result = test_email_connection()
+
+    return f"Email Test Result: {result}"
+
 # =========================
 # RUN
 # =========================
