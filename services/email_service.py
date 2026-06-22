@@ -53,52 +53,34 @@ def send_email(
 # ====================================
 # VERIFY EMAIL
 # ====================================
-
-def send_verification_email (
+def send_verification_email(
     recipient,
-    subject,
-    body
+    verification_link
 ):
 
-    try:
+    subject = "Verify Your Email"
 
-        print("=" * 50)
-        print("EMAIL DEBUG START")
-        print("MAIL_SERVER =", current_app.config.get("MAIL_SERVER"))
-        print("MAIL_PORT =", current_app.config.get("MAIL_PORT"))
-        print("MAIL_USERNAME =", current_app.config.get("MAIL_USERNAME"))
-        print("MAIL_USE_TLS =", current_app.config.get("MAIL_USE_TLS"))
-        print("RECIPIENT =", recipient)
-        print("=" * 50)
+    body = f"""
+    <html>
+    <body>
 
-        msg = Message(
-            subject=subject,
-            sender=current_app.config.get("MAIL_USERNAME"),
-            recipients=[recipient]
-        )
+    <h2>Verify Email</h2>
 
-        msg.html = body
+    <p>Click the button below to verify your account.</p>
 
-        print("Before mail.send()")
+    <a href="{verification_link}">
+        Verify Email
+    </a>
 
-        mail.send(msg)
+    </body>
+    </html>
+    """
 
-        print("After mail.send()")
-        print("EMAIL SENT SUCCESS")
-
-        return True
-
-    except Exception as e:
-
-        print("=" * 50)
-        print("EMAIL ERROR")
-        print(str(e))
-        traceback.print_exc()
-        print("=" * 50)
-
-        return False
-
-
+    return send_email(
+        recipient,
+        subject,
+        body
+    )
 
 # ====================================
 # RESET PASSWORD
