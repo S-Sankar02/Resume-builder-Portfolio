@@ -11,7 +11,7 @@ from models.user import db, User
 from models.portfolio import Portfolio
 from models.resume import Resume
 from models.login_history import LoginHistory
-from services.email_service import mail
+
 from routes.auth import auth
 from routes.ai import ai_bp
 from routes.resume import resume_bp
@@ -27,7 +27,7 @@ app.config.from_object(Config)
 bcrypt = Bcrypt(app)
 
 db.init_app(app)
-mail.init_app(app)
+
 
 with app.app_context():
     db.create_all()
