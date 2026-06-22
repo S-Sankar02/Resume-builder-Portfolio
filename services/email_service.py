@@ -1,11 +1,23 @@
 from flask_mail import Mail, Message
 from flask import current_app
 import traceback
+import threading
 
 mail = Mail()
 
 # ====================================
-# CORE EMAIL SENDER
+# INTERNAL SAFE SENDER
+# ====================================
+
+def _send(msg):
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print("EMAIL FAILED:", str(e))
+
+
+# ====================================
+# CORE EMAIL SENDER (NON-BLOCKING)
 # ====================================
 
 def send_email(recipient, subject, body):
@@ -17,9 +29,10 @@ def send_email(recipient, subject, body):
             html=body
         )
 
-        mail.send(msg)
+        # 🔥 IMPORTANT: RUN IN BACKGROUND THREAD
+        threading.Thread(target=_send, args=(msg,)).start()
 
-        return {"success": True, "message": "Email sent successfully"}
+        return {"success": True, "message": "Email queued"}
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
@@ -29,7 +42,7 @@ def send_email(recipient, subject, body):
 
 
 # ====================================
-# EMAIL HELPERS
+# HELPERS
 # ====================================
 
 def send_verification_email(recipient, verification_link):
