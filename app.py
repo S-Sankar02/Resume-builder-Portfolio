@@ -1,4 +1,5 @@
 import os
+import socket
 import PyPDF2
 import docx
 from werkzeug.utils import secure_filename
@@ -347,6 +348,16 @@ def server_error(e):
 def favicon():
     return "", 204
 
+@app.route("/smtp-test")
+def smtp_test():
+    try:
+        socket.create_connection(
+            ("smtp.sendgrid.net", 587),
+            timeout=10
+        )
+        return "SMTP CONNECT SUCCESS"
+    except Exception as e:
+        return f"SMTP ERROR: {e}"
 # =========================
 # RUN
 # =========================
