@@ -11,16 +11,23 @@ mail = Mail()
 def send_email(recipient, subject, body):
     try:
         app = current_app._get_current_object()
+       
+        print("========== EMAIL DEBUG ==========")
+        print("SERVER:", app.config.get("MAIL_SERVER"))
+        print("PORT:", app.config.get("MAIL_PORT"))
+        print("USERNAME:", app.config.get("MAIL_USERNAME"))
+        print("SENDER:", app.config.get("MAIL_DEFAULT_SENDER"))
+        print("TO:", recipient)
+        print("=================================")
 
-        with app.app_context():
-            msg = Message(
+        msg = Message(
                 subject=subject,
-                sender=app.config.get("MAIL_USERNAME"),
+                sender=app.config.get("MAIL_DEFAULT_SENDER"),
                 recipients=[recipient],
                 html=body
             )
 
-            mail.send(msg)
+        mail.send(msg)
 
         print("EMAIL SENT SUCCESS")
         return {"success": True}
