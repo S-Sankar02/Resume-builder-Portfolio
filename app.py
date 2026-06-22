@@ -375,6 +375,27 @@ def smtp_test():
         traceback.print_exc()
 
         return f"SMTP ERROR: {str(e)}"
+    
+
+@app.route("/dns-test")
+def dns_test():
+    import socket
+
+    try:
+        ip = socket.gethostbyname("smtp.sendgrid.net")
+        return f"SMTP IP = {ip}"
+
+    except Exception as e:
+        return str(e)
+    
+@app.route("/mail-config")
+def mail_config():
+    return {
+        "server": app.config.get("MAIL_SERVER"),
+        "port": app.config.get("MAIL_PORT"),
+        "username": app.config.get("MAIL_USERNAME"),
+        "sender": app.config.get("MAIL_DEFAULT_SENDER")
+    }
 # =========================
 # RUN
 # =========================

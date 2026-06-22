@@ -1,47 +1,45 @@
-from flask_mail import Mail, Message
+from flask import current_app
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import traceback
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from flask import current_app
 import traceback
 
-mail = Mail()
-
-# =========================
-# SAFE EMAIL SENDER
-# =========================
 
 def send_email(recipient, subject, body):
+
     try:
-        app = current_app._get_current_object()
-       
-        print("========== EMAIL DEBUG ==========")
-        print("SERVER:", app.config.get("MAIL_SERVER"))
-        print("PORT:", app.config.get("MAIL_PORT"))
-        print("USERNAME:", app.config.get("MAIL_USERNAME"))
-        print("SENDER:", app.config.get("MAIL_DEFAULT_SENDER"))
-        print("TO:", recipient)
-        print("=================================")
 
-        msg = Message(
-                subject=subject,
-                sender=app.config.get("MAIL_DEFAULT_SENDER"),
-                recipients=[recipient],
-                html=body
-            )
+        message = Mail(
+            from_email=current_app.config["MAIL_DEFAULT_SENDER"],
+            to_emails=recipient,
+            subject=subject,
+            html_content=body
+        )
 
-        mail.send(msg)
+        sg = SendGridAPIClient(
+            current_app.config["MAIL_PASSWORD"]
+        )
 
-        print("EMAIL SENT SUCCESS")
+        response = sg.send(message)
+
+        print("EMAIL SENT:", response.status_code)
+
         return {"success": True}
 
     except Exception as e:
-        print("EMAIL FAILED:", str(e))
+
+        print("EMAIL FAILED")
+        print(str(e))
         traceback.print_exc()
-        return {"success": False, "error": str(e)}
 
-
-# =========================
-# EMAIL FUNCTIONS
-# =========================
-
+        return {
+            "success": False,
+            "error": str(e)
+        }
 def send_verification_email(recipient, verification_link):
     return send_email(
         recipient,
