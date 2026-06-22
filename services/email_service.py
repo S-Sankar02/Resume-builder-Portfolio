@@ -1,15 +1,13 @@
 from flask_mail import Mail, Message
 from flask import current_app
 import traceback
-import threading
 
 mail = Mail()
 
 
-# ====================================
-# CORE EMAIL SENDER (NON-BLOCKING SAFE)
-# ====================================
-
+# =========================
+# CORE EMAIL SENDER
+# =========================
 def send_email(recipient, subject, body):
     try:
         msg = Message(
@@ -19,54 +17,38 @@ def send_email(recipient, subject, body):
             html=body
         )
 
-        # 🔥 Send in background to avoid Render timeout
-        def _send():
-            try:
-                mail.send(msg)
-                print("EMAIL SENT SUCCESS")
-            except Exception as e:
-                print("EMAIL SEND FAILED:", str(e))
+        mail.send(msg)
 
-        threading.Thread(target=_send).start()
+        print("EMAIL SENT SUCCESS")
 
-        return {
-            "success": True,
-            "message": "Email queued successfully"
-        }
+        return {"success": True}
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
         traceback.print_exc()
-
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        return {"success": False, "error": str(e)}
 
 
-# ====================================
-# OTP EMAIL
-# ====================================
-
-def send_login_otp_email(recipient, otp):
-    subject = "Your Login OTP"
+# =========================
+# VERIFY EMAIL (FIXED MISSING FUNCTION)
+# =========================
+def send_verification_email(recipient, verification_link):
+    subject = "Verify Your Email"
 
     body = f"""
-    <h2>Login OTP</h2>
-    <p>Your OTP is:</p>
-    <h1>{otp}</h1>
-    <p>Valid for 5 minutes</p>
+    <h2>Email Verification</h2>
+    <p>Click below to verify:</p>
+    <a href="{verification_link}">Verify Email</a>
     """
 
     return send_email(recipient, subject, body)
 
 
-# ====================================
-# RESET PASSWORD EMAIL
-# ====================================
-
+# =========================
+# RESET PASSWORD
+# =========================
 def send_reset_password_email(recipient, reset_link):
-    subject = "Reset Password"
+    subject = "Reset Your Password"
 
     body = f"""
     <h2>Password Reset</h2>
@@ -77,32 +59,35 @@ def send_reset_password_email(recipient, reset_link):
     return send_email(recipient, subject, body)
 
 
-# ====================================
-# WELCOME EMAIL
-# ====================================
-
-def send_welcome_email(recipient, username):
-    subject = "Welcome"
-
-    body = f"""
-    <h2>Welcome {username}</h2>
-    <p>Your account is ready.</p>
-    """
-
-    return send_email(recipient, subject, body)
-
-
-# ====================================
-# ACCOUNT LOCK EMAIL (IMPORTANT FIX)
-# ====================================
-
+# =========================
+# ACCOUNT LOCK ALERT
+# =========================
 def send_account_locked_email(recipient):
     subject = "Account Locked"
 
     body = """
     <h2>Security Alert</h2>
-    <p>Your account has been locked due to multiple failed login attempts.</p>
-    <p>Please reset your password.</p>
+    <p>Your account has been locked due to failed login attempts.</p>
     """
 
     return send_email(recipient, subject, body)
+
+
+# =========================
+# TEST EMAIL
+# =========================
+def test_email_connection():
+    try:
+        msg = Message(
+            subject="SMTP Test",
+            sender=current_app.config["MAIL_USERNAME"],
+            recipients=[current_app.config["MAIL_USERNAME"]],
+            html="<h1>SMTP Working</h1>"
+        )
+
+        mail.send(msg)
+        return True
+
+    except Exception as e:
+        print("SMTP ERROR:", str(e))
+        return False
