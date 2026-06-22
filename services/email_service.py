@@ -1,12 +1,6 @@
 from flask import current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-import traceback
-
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from flask import current_app
-import traceback
 
 
 def send_email(recipient, subject, html):
@@ -26,10 +20,7 @@ def send_email(recipient, subject, html):
 
         response = sg.send(message)
 
-        print(
-            "SENDGRID STATUS:",
-            response.status_code
-        )
+        print("EMAIL STATUS:", response.status_code)
 
         return {"success": True}
 
@@ -41,6 +32,8 @@ def send_email(recipient, subject, html):
             "success": False,
             "error": str(e)
         }
+
+
 def send_verification_email(recipient, verification_link):
     return send_email(
         recipient,
