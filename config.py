@@ -15,6 +15,7 @@ class Config:
     # Database
     # =========================
 
+
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     SQLALCHEMY_DATABASE_URI = (
@@ -41,7 +42,7 @@ class Config:
     SESSION_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = True
 
     # =========================
     # OTP / Reset
