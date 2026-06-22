@@ -350,15 +350,31 @@ def favicon():
 
 @app.route("/smtp-test")
 def smtp_test():
+
+    import socket
+    import traceback
+
     try:
-        socket.create_connection(
+        print("TESTING SMTP...")
+
+        s = socket.create_connection(
             ("smtp.sendgrid.net", 587),
             timeout=10
         )
+
+        s.close()
+
+        print("SMTP SUCCESS")
+
         return "SMTP CONNECT SUCCESS"
+
     except Exception as e:
-        return f"SMTP ERROR: {e}"
-    
+
+        print("SMTP FAILED")
+        print(str(e))
+        traceback.print_exc()
+
+        return f"SMTP ERROR: {str(e)}"
 # =========================
 # RUN
 # =========================
