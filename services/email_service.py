@@ -54,88 +54,49 @@ def send_email(
 # VERIFY EMAIL
 # ====================================
 
-def send_verification_email(
+def send_email(
     recipient,
-    verification_link
+    subject,
+    body
 ):
 
-    subject = "Verify Your AI Resume Builder Account"
+    try:
 
+        print("=" * 50)
+        print("EMAIL DEBUG START")
+        print("MAIL_SERVER =", current_app.config.get("MAIL_SERVER"))
+        print("MAIL_PORT =", current_app.config.get("MAIL_PORT"))
+        print("MAIL_USERNAME =", current_app.config.get("MAIL_USERNAME"))
+        print("MAIL_USE_TLS =", current_app.config.get("MAIL_USE_TLS"))
+        print("RECIPIENT =", recipient)
+        print("=" * 50)
 
-    body = f"""
+        msg = Message(
+            subject=subject,
+            sender=current_app.config.get("MAIL_USERNAME"),
+            recipients=[recipient]
+        )
 
-<html>
+        msg.html = body
 
-<body>
+        print("Before mail.send()")
 
-<h2>
-Welcome to AI Resume Builder 🚀
-</h2>
+        mail.send(msg)
 
+        print("After mail.send()")
+        print("EMAIL SENT SUCCESS")
 
-<p>
-Your account has been created successfully.
-</p>
+        return True
 
+    except Exception as e:
 
-<p>
-Please verify your email address:
-</p>
+        print("=" * 50)
+        print("EMAIL ERROR")
+        print(str(e))
+        traceback.print_exc()
+        print("=" * 50)
 
-
-<br>
-
-
-<a href="{verification_link}"
-style="
-background:#0d6efd;
-color:white;
-padding:12px 25px;
-text-decoration:none;
-border-radius:6px;
-font-size:16px;
-">
-
-Verify Email
-
-</a>
-
-
-<br><br>
-
-
-<p>
-If the button does not work, copy this link:
-</p>
-
-
-<p>
-{verification_link}
-</p>
-
-
-<p>
-
-Regards,<br>
-
-AI Resume Builder Team
-
-</p>
-
-
-</body>
-
-</html>
-
-"""
-
-
-    return send_email(
-        recipient,
-        subject,
-        body
-    )
-
+        return False
 
 
 
