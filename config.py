@@ -39,6 +39,7 @@ class Config:
     )
     MAIL_TIMEOUT = 20
 
+
     # =========================
     # Session Security
     # =========================
