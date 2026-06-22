@@ -12,7 +12,7 @@ from models.portfolio import Portfolio
 from models.resume import Resume
 from models.login_history import LoginHistory
 
-from routes.auth import auth
+import routes.auth
 from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
@@ -45,7 +45,7 @@ def load_user(user_id):
 # =========================
 # BLUEPRINTS
 # =========================
-app.register_blueprint(auth)
+app.register_blueprint(routes.auth.auth)
 app.register_blueprint(ai_bp, url_prefix="/ai")
 app.register_blueprint(resume_bp, url_prefix="/resume")
 app.register_blueprint(portfolio_bp, url_prefix="/portfolio")
