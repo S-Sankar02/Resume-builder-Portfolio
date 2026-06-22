@@ -18,76 +18,42 @@ def send_email(recipient, subject, body):
         )
 
         mail.send(msg)
-
-        print("EMAIL SENT SUCCESS")
-
-        return {"success": True}
+        return True
 
     except Exception as e:
         print("EMAIL ERROR:", str(e))
         traceback.print_exc()
-        return {"success": False, "error": str(e)}
+        return False
 
 
 # =========================
-# VERIFY EMAIL (FIXED MISSING FUNCTION)
+# VERIFY EMAIL (FIX FOR auth.py)
 # =========================
-def send_verification_email(recipient, verification_link):
-    subject = "Verify Your Email"
-
-    body = f"""
-    <h2>Email Verification</h2>
-    <p>Click below to verify:</p>
-    <a href="{verification_link}">Verify Email</a>
-    """
-
-    return send_email(recipient, subject, body)
+def send_verification_email(recipient, link):
+    return send_email(
+        recipient,
+        "Verify Email",
+        f"<h2>Verify Email</h2><a href='{link}'>Click here</a>"
+    )
 
 
 # =========================
 # RESET PASSWORD
 # =========================
-def send_reset_password_email(recipient, reset_link):
-    subject = "Reset Your Password"
-
-    body = f"""
-    <h2>Password Reset</h2>
-    <p>Click below:</p>
-    <a href="{reset_link}">Reset Password</a>
-    """
-
-    return send_email(recipient, subject, body)
+def send_reset_password_email(recipient, link):
+    return send_email(
+        recipient,
+        "Reset Password",
+        f"<h2>Reset Password</h2><a href='{link}'>Reset</a>"
+    )
 
 
 # =========================
-# ACCOUNT LOCK ALERT
+# ACCOUNT LOCK EMAIL
 # =========================
 def send_account_locked_email(recipient):
-    subject = "Account Locked"
-
-    body = """
-    <h2>Security Alert</h2>
-    <p>Your account has been locked due to failed login attempts.</p>
-    """
-
-    return send_email(recipient, subject, body)
-
-
-# =========================
-# TEST EMAIL
-# =========================
-def test_email_connection():
-    try:
-        msg = Message(
-            subject="SMTP Test",
-            sender=current_app.config["MAIL_USERNAME"],
-            recipients=[current_app.config["MAIL_USERNAME"]],
-            html="<h1>SMTP Working</h1>"
-        )
-
-        mail.send(msg)
-        return True
-
-    except Exception as e:
-        print("SMTP ERROR:", str(e))
-        return False
+    return send_email(
+        recipient,
+        "Account Locked",
+        "<h2>Your account is locked due to failed attempts</h2>"
+    )
