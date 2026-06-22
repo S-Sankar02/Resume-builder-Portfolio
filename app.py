@@ -359,65 +359,31 @@ def debug_mail():
         "MAIL_USE_TLS": app.config.get("MAIL_USE_TLS"),
         "MAIL_USERNAME": app.config.get("MAIL_USERNAME")
     }
-
 @app.route("/test-email")
 def test_email_connection():
-
     try:
-
-        print("=" * 50)
-        print("SMTP TEST START")
-        print("MAIL_SERVER =", current_app.config.get("MAIL_SERVER"))
-        print("MAIL_PORT =", current_app.config.get("MAIL_PORT"))
-        print("MAIL_USERNAME =", current_app.config.get("MAIL_USERNAME"))
-
-        password = current_app.config.get("MAIL_PASSWORD")
-
-        print("PASSWORD EXISTS =", password is not None)
-        print("PASSWORD LENGTH =", len(password) if password else 0)
-
         msg = Message(
-            subject="SMTP Test",
+            subject="SMTP Test Email",
             sender=current_app.config["MAIL_USERNAME"],
-            recipients=[current_app.config["MAIL_USERNAME"]]
+            recipients=[current_app.config["MAIL_USERNAME"]],
+            body="Email system working"
         )
-
-        msg.html = "<h1>SMTP Test</h1>"
-
-        print("BEFORE SEND")
 
         mail.send(msg)
 
-        print("AFTER SEND")
-        print("SMTP SUCCESS")
-
-        return True
+        return jsonify({
+            "success": True,
+            "message": "Email sent successfully"
+        })
 
     except Exception as e:
-
-        print("SMTP FAILED")
-        print(str(e))
+        import traceback
         traceback.print_exc()
 
-        return False
-    
-
-
-@app.route("/smtp-test")
-def smtp_test():
-
-    try:
-
-        socket.create_connection(
-            ("smtp-relay.brevo.com", 587),
-            timeout=10
-        )
-
-        return "Brevo SMTP Reachable"
-
-    except Exception as e:
-
-        return f"ERROR: {str(e)}"
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 # =========================
 # RUN
 # =========================
