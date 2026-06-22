@@ -16,6 +16,7 @@ from routes.ai import ai_bp
 from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
+from services.email_service import test_email_connection
 
 # =========================
 # APP INIT
@@ -359,8 +360,7 @@ def debug_mail():
 @app.route("/test-email")
 def test_email():
 
-    from services.email_service import test_email_connection
-
+    
     result = test_email_connection()
 
     return f"Email Test Result: {result}"
