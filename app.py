@@ -347,51 +347,6 @@ def server_error(e):
 @app.route("/favicon.ico")
 def favicon():
     return "", 204
-
-@app.route("/smtp-test")
-def smtp_test():
-    import socket
-
-    try:
-        print("TESTING SMTP...")
-
-        socket.setdefaulttimeout(5)
-
-        s = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_STREAM
-        )
-
-        result = s.connect_ex(
-            ("smtp.sendgrid.net", 587)
-        )
-
-        s.close()
-
-        return f"RESULT = {result}"
-
-    except Exception as e:
-        return str(e)
-    
-@app.route("/dns-test")
-def dns_test():
-    import socket
-
-    try:
-        ip = socket.gethostbyname("smtp.sendgrid.net")
-        return f"SMTP IP = {ip}"
-
-    except Exception as e:
-        return str(e)
-    
-@app.route("/mail-config")
-def mail_config():
-    return {
-        "server": app.config.get("MAIL_SERVER"),
-        "port": app.config.get("MAIL_PORT"),
-        "username": app.config.get("MAIL_USERNAME"),
-        "sender": app.config.get("MAIL_DEFAULT_SENDER")
-    }
 # =========================
 # RUN
 # =========================
