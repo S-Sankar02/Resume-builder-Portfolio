@@ -1,49 +1,39 @@
 from flask_mail import Mail, Message
 from flask import current_app
 import traceback
-import threading
 
 mail = Mail()
 
-# ====================================
-# INTERNAL SAFE SENDER
-# ====================================
-
-def _send(msg):
-    try:
-        mail.send(msg)
-    except Exception as e:
-        print("EMAIL FAILED:", str(e))
-
-
-# ====================================
-# CORE EMAIL SENDER (NON-BLOCKING)
-# ====================================
+# =========================
+# SAFE EMAIL SENDER
+# =========================
 
 def send_email(recipient, subject, body):
     try:
-        msg = Message(
-            subject=subject,
-            sender=current_app.config["MAIL_USERNAME"],
-            recipients=[recipient],
-            html=body
-        )
+        app = current_app._get_current_object()
 
-        # 🔥 IMPORTANT: RUN IN BACKGROUND THREAD
-        threading.Thread(target=_send, args=(msg,)).start()
+        with app.app_context():
+            msg = Message(
+                subject=subject,
+                sender=app.config.get("MAIL_USERNAME"),
+                recipients=[recipient],
+                html=body
+            )
 
-        return {"success": True, "message": "Email queued"}
+            mail.send(msg)
+
+        print("EMAIL SENT SUCCESS")
+        return {"success": True}
 
     except Exception as e:
-        print("EMAIL ERROR:", str(e))
+        print("EMAIL FAILED:", str(e))
         traceback.print_exc()
-
         return {"success": False, "error": str(e)}
 
 
-# ====================================
-# HELPERS
-# ====================================
+# =========================
+# EMAIL FUNCTIONS
+# =========================
 
 def send_verification_email(recipient, verification_link):
     return send_email(
