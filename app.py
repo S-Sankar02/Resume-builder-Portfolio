@@ -2,7 +2,7 @@ import os
 import PyPDF2
 import docx
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, redirect, url_for, request, jsonify, flash
+from flask import Flask, current_app, render_template, redirect, url_for, request, jsonify, flash
 from flask_login import LoginManager, login_required, current_user
 from flask_bcrypt import Bcrypt
 from config import Config
@@ -17,7 +17,9 @@ from routes.resume import resume_bp
 from routes.portfolio import portfolio_bp
 from routes.admin import admin_bp
 from services.email_service import test_email_connection
+from flask_mail import Message
 
+import traceback
 # =========================
 # APP INIT
 # =========================
@@ -358,13 +360,45 @@ def debug_mail():
     }
 
 @app.route("/test-email")
-def test_email():
+def test_email_connection():
 
-    
-    result = test_email_connection()
+    try:
 
-    return f"Email Test Result: {result}"
+        print("=" * 50)
+        print("SMTP TEST START")
+        print("MAIL_SERVER =", current_app.config.get("MAIL_SERVER"))
+        print("MAIL_PORT =", current_app.config.get("MAIL_PORT"))
+        print("MAIL_USERNAME =", current_app.config.get("MAIL_USERNAME"))
 
+        password = current_app.config.get("MAIL_PASSWORD")
+
+        print("PASSWORD EXISTS =", password is not None)
+        print("PASSWORD LENGTH =", len(password) if password else 0)
+
+        msg = Message(
+            subject="SMTP Test",
+            sender=current_app.config["MAIL_USERNAME"],
+            recipients=[current_app.config["MAIL_USERNAME"]]
+        )
+
+        msg.html = "<h1>SMTP Test</h1>"
+
+        print("BEFORE SEND")
+
+        mail.send(msg)
+
+        print("AFTER SEND")
+        print("SMTP SUCCESS")
+
+        return True
+
+    except Exception as e:
+
+        print("SMTP FAILED")
+        print(str(e))
+        traceback.print_exc()
+
+        return False
 # =========================
 # RUN
 # =========================
